@@ -1,0 +1,131 @@
+<title>عمرك لا تثق برابط</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* Deliberately single-theme: the brief calls for one fixed, all-white page. */
+  :root{
+    --bg:#FFFFFF;
+    --ink:#16181B;
+    --ink-soft:#767C82;
+    --green:#43A047;
+    --green-soft:#EAF7EB;
+    --green-deep:#2E7D32;
+    --border:#ECECEC;
+  }
+  *{ box-sizing:border-box; }
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Tajawal',system-ui,sans-serif;
+    direction:rtl;
+    min-height:100%;
+    display:flex; flex-direction:column;
+  }
+  h1,.eyebrow-title{ font-family:'Cairo',system-ui,sans-serif; text-wrap:balance; }
+
+  .tag{
+    position:fixed; top:14px; inset-inline-start:14px;
+    font-size:.68rem; color:var(--ink-soft); font-weight:500;
+    background:var(--green-soft); padding:5px 10px; border-radius:999px;
+    display:flex; align-items:center; gap:6px; z-index:5;
+  }
+  .tag .dot{ width:5px; height:5px; border-radius:50%; background:var(--green); }
+
+  .stage{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:80px 24px 60px;
+  }
+  .screen{
+    max-width:440px; width:100%; text-align:center;
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+  }
+  .screen[hidden]{ display:none; }
+
+  .icon-badge{
+    width:64px; height:64px; border-radius:50%;
+    background:var(--green-soft); color:var(--green);
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  .eyebrow{ font-size:.82rem; color:var(--ink-soft); font-weight:500; margin:0; }
+  .headline{ font-size:1.55rem; font-weight:800; margin:0; line-height:1.4; }
+
+  .cta{
+    appearance:none; border:none; cursor:pointer;
+    background:var(--green); color:#FFFFFF;
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:1.05rem;
+    padding:18px 38px; border-radius:14px;
+    box-shadow:0 16px 30px -14px rgba(67,160,71,.55);
+    transition:transform .15s ease, box-shadow .15s ease;
+    margin-top:6px;
+  }
+  .cta:hover{ transform:translateY(-2px); box-shadow:0 20px 36px -14px rgba(67,160,71,.6); }
+  .cta:focus-visible{ outline:3px solid var(--green-deep); outline-offset:3px; }
+
+  .fine-print{ font-size:.74rem; color:var(--ink-soft); max-width:34ch; line-height:1.7; margin-top:2px; }
+
+  .reveal-headline{
+    font-size:2.1rem; font-weight:800; color:var(--green);
+    line-height:1.35; margin:0;
+  }
+  .reveal-body{ font-size:.95rem; color:var(--ink-soft); max-width:40ch; line-height:1.85; margin:0; }
+
+  .back-link{
+    appearance:none; border:1px solid var(--border); background:transparent; cursor:pointer;
+    color:var(--ink-soft); font-family:'Tajawal',sans-serif; font-weight:600; font-size:.85rem;
+    padding:10px 22px; border-radius:10px; margin-top:8px;
+    transition:background .15s ease, color .15s ease;
+  }
+  .back-link:hover{ background:var(--green-soft); color:var(--green-deep); }
+  .back-link:focus-visible{ outline:3px solid var(--green); outline-offset:2px; }
+
+  footer{ text-align:center; padding:0 24px 26px; }
+  .disclaimer{ font-size:.72rem; color:var(--ink-soft); max-width:48ch; margin:0 auto; line-height:1.7; }
+
+  #screenMain, #screenReveal{ opacity:1; transition:opacity .22s ease; }
+  @media (prefers-reduced-motion: reduce){ #screenMain, #screenReveal{ transition:none; } }
+</style>
+
+<span class="tag"><span class="dot"></span> محاكاة توعوية لأساليب الاحتيال الإلكتروني</span>
+
+<div class="stage">
+  <div class="screen" id="screenMain">
+    <div class="icon-badge">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M20 7L9 18l-5-5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity="0"/><path d="M12 3l2.6 5.6L21 9.3l-4.5 4.2 1.2 6.1L12 16.8l-5.7 2.8 1.2-6.1L3 9.3l6.4-.7L12 3z" fill="currentColor"/></svg>
+    </div>
+    <p class="eyebrow">عرض حصري لمستخدمينا اليوم فقط</p>
+    <h1 class="headline">لديك مكافأة بانتظارك، فعّلها الآن قبل انتهاء العرض</h1>
+    <button class="cta" id="claimBtn">احصل على 50000 نقطة</button>
+    <p class="fine-print">بالضغط أعلاه سيتم تحويلك مباشرة لصفحة استلام المكافأة.</p>
+  </div>
+
+  <div class="screen" id="screenReveal" hidden>
+    <div class="icon-badge">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M13.5 10.5L20 4M15 4h5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 6.5H6a3 3 0 000 6h3M15 17.5h3a3 3 0 000-6h-3M9 11.5h6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+    </div>
+    <h1 class="reveal-headline">عمرك لا تثق برابط</h1>
+    <p class="reveal-body">وعود بنقاط ومكافآت مفاجئة تنتهي خلال دقائق هي أشهر طُعم يستخدمه المحتالون لدفعك للضغط دون تفكير. لو كان هذا رابطاً حقيقياً، كان ممكن يوصّلك لصفحة تسرق بياناتك.</p>
+    <button class="back-link" id="backBtn">رجوع</button>
+  </div>
+</div>
+
+<footer>
+  <p class="disclaimer">هذه صفحة تجريبية لأغراض التوعية بمخاطر الاحتيال الإلكتروني فقط، ولا يوجد أي مكافأة أو نقاط حقيقية.</p>
+</footer>
+
+<script>
+(function(){
+  var main = document.getElementById('screenMain');
+  var reveal = document.getElementById('screenReveal');
+
+  document.getElementById('claimBtn').addEventListener('click', function(){
+    main.hidden = true;
+    reveal.hidden = false;
+  });
+  document.getElementById('backBtn').addEventListener('click', function(){
+    reveal.hidden = true;
+    main.hidden = false;
+  });
+})();
+</script>

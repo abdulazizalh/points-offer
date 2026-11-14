@@ -1,0 +1,534 @@
+<title>MASAR · مَسار</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: wide showcase page + phone-framed interactive app. Deliberately single light theme (MASAR brand). */
+:root{
+  --navy:#223A5E;--deep:#355982;--medium:#4D79A8;--accent:#6E9ECC;--light:#9FC0E3;--pale:#D0E1F2;--bg:#F3F8FD;
+  --white:#FFFFFF;--muted:#6B7F95;--success:#27966B;--warning:#E6A23C;--error:#D9534F;--line:#E1EAF3;--warnbg:#FDF6EA;--warnfg:#8A5B12;
+  --f-ar:"IBM Plex Sans Arabic","Inter",system-ui,sans-serif;--f-en:"Inter","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --shadow:0 1px 2px rgba(34,58,94,.04),0 6px 20px rgba(34,58,94,.07);--float:0 14px 40px rgba(34,58,94,.18);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:#E9F1F9;color:var(--navy);font-family:var(--f-ar);margin:0;-webkit-font-smoothing:antialiased}
+html[lang=en] body{font-family:var(--f-en)}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+input{font:inherit;color:var(--navy)}
+a{color:inherit;text-decoration:none}
+:focus-visible{outline:2px solid var(--medium);outline-offset:2px}
+.num{direction:ltr;unicode-bidi:isolate;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}
+/* showcase */
+.wide{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:#fff}
+.topbar .wide{display:flex;align-items:center;justify-content:space-between;padding-block:10px}
+.brand{display:flex;align-items:center;gap:8px;direction:ltr}
+.brand b{font-family:var(--f-en);letter-spacing:.28em;font-size:15px;font-weight:600}
+.brand small{display:block;font-family:var(--f-ar);color:var(--muted);font-size:11px;margin-top:2px}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:12px;font-weight:600;background:#fff}
+.hero{background:linear-gradient(135deg,#223A5E,#2B4A75 55%,#355982);color:#fff;overflow:hidden;position:relative}
+.hero .wide{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-block:56px}
+.hero h1{font-size:46px;line-height:1.15;margin:16px 0 4px;font-weight:600;text-wrap:balance}
+.hero p{color:var(--pale);font-size:16px;line-height:1.75;max-width:520px}
+.tag{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--pale);border-radius:999px;padding:5px 12px;font-size:12px}
+.cta{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:16px;font-weight:600;font-size:15px}
+.cta.white{background:#fff;color:var(--navy);box-shadow:var(--float)}
+.cta.ghost{border:1px solid rgba(255,255,255,.35);color:#fff}
+.cta.navy{background:var(--navy);color:#fff}
+.sec{padding-block:56px 0}
+.sec h2{text-align:center;font-size:28px;margin:0;font-weight:600;text-wrap:balance}
+.sec .sub{text-align:center;color:var(--muted);margin:8px auto 0;max-width:640px;line-height:1.7}
+.grid{display:grid;gap:12px;margin-top:28px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.feat{padding:18px}
+.feat .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--navy),var(--medium));color:#fff}
+.feat h3{font-size:15px;margin:14px 0 6px}.feat p{font-size:13px;line-height:1.65;color:var(--muted);margin:0}
+.step{display:flex;gap:14px;padding:18px}
+.step .n{width:38px;height:38px;flex:none;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700}
+.step h3{margin:0;font-size:15px}.step p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.part{display:flex;flex-direction:column;padding:22px;border-radius:22px;color:#fff;box-shadow:var(--float);text-align:start}
+.part h3{margin:16px 0 6px;font-size:18px}.part p{margin:0;flex:1;color:var(--pale);font-size:13.5px;line-height:1.65}
+.part span.b{margin-top:16px;background:#fff;color:var(--navy);border-radius:12px;height:40px;display:grid;place-items:center;font-weight:600;font-size:14px}
+.links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.links button{border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:start;font-size:13px;font-weight:500;background:#fff}
+.links button:hover{background:var(--bg)}
+.foot{margin-top:56px;border-top:1px solid var(--line);background:#fff;padding-block:28px;text-align:center;font-size:12px;color:var(--muted)}
+/* phone */
+.stage{min-height:100%;display:flex;justify-content:center;padding-block:20px;padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+.phone{width:100%;max-width:440px;background:var(--bg);border-radius:34px;box-shadow:var(--float);border:1px solid var(--line);overflow:hidden;position:relative;min-height:760px;display:flex;flex-direction:column}
+.scr{flex:1;overflow-y:auto;padding-bottom:84px}
+.demo{background:var(--warnbg);color:var(--warnfg);font-size:11px;text-align:center;padding:6px 14px;border-bottom:1px solid rgba(230,162,60,.25)}
+.hdr{display:flex;align-items:center;gap:6px;padding:12px 16px 8px;min-height:56px}
+.hdr h1{font-size:18px;margin:0;font-weight:600;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.icb{width:40px;height:40px;border-radius:50%;display:grid;place-items:center}
+.icb:hover{background:rgba(208,225,242,.6)}
+[dir=rtl] .flip{transform:scaleX(-1)}
+.nav{position:absolute;bottom:0;inset-inline:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(5,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 0 12px;font-size:10.5px;font-weight:500;color:var(--muted);position:relative}
+.nav button.on{color:var(--navy)}
+.nav button.on::before{content:"";position:absolute;top:0;width:32px;height:3px;border-radius:0 0 4px 4px;background:var(--navy)}
+.badge{position:absolute;top:4px;margin-inline-start:22px;background:var(--error);color:#fff;border-radius:999px;font-size:10px;font-weight:700;min-width:17px;height:17px;display:grid;place-items:center;padding:0 4px;border:2px solid #fff}
+.px{padding-inline:20px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:16px;font-weight:600;font-size:15px;width:100%;transition:transform .1s}
+.btn:active{transform:scale(.98)}
+.btn.p{background:var(--navy);color:#fff;box-shadow:0 6px 16px rgba(34,58,94,.22)}
+.btn.o{background:#fff;border:1px solid var(--line);color:var(--navy)}
+.btn.s{background:rgba(208,225,242,.7);color:var(--navy)}
+.btn.d{background:#fff;border:1px solid var(--line);color:var(--error)}
+.btn[disabled]{opacity:.45;pointer-events:none}
+.inp{width:100%;height:50px;border:1px solid var(--line);border-radius:16px;padding:0 16px;font-size:15px;background:#fff;outline:none}
+.inp:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(208,225,242,.6)}
+label.l{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+.err{color:var(--error);font-size:12.5px;margin-top:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:500;white-space:nowrap;flex:none}
+.chip.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.row{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-inline:20px}
+.row::-webkit-scrollbar{display:none}
+.st{display:flex;justify-content:space-between;align-items:flex-end;padding:0 20px;margin:24px 0 12px}
+.st h2{font-size:16px;margin:0;font-weight:600}.st button{font-size:13px;color:var(--medium);font-weight:500}
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px 8px;padding-inline:16px}
+.cat{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;font-size:11px;font-weight:500;line-height:1.3}
+.cat i{width:56px;height:56px;border-radius:19px;background:#fff;border:1px solid var(--line);display:grid;place-items:center;color:var(--deep);box-shadow:0 1px 3px rgba(34,58,94,.06);font-style:normal}
+.logo{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;font-weight:700;font-family:var(--f-en);font-size:16px;flex:none;letter-spacing:.04em}
+.pc{display:flex;gap:12px;padding:14px;text-align:start;width:100%}
+.pc h3{margin:0;font-size:15px}.meta{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:9px;font-size:12.5px}
+.dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.tagd{border:1px solid rgba(230,162,60,.4);background:rgba(230,162,60,.1);color:#9A6514;font-size:10px;font-weight:700;border-radius:6px;padding:2px 6px;flex:none;height:max-content}
+.b{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:600}
+.b.blue{background:rgba(208,225,242,.8);color:var(--deep)}.b.ok{background:rgba(39,150,107,.1);color:var(--success)}.b.mut{background:#EEF3F8;color:var(--muted)}.b.nv{background:var(--navy);color:#fff}.b.er{background:rgba(217,83,79,.1);color:var(--error)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-radius:16px;padding:12px 0;text-align:center;margin-top:14px}
+.stats div+div{border-inline-start:1px solid var(--line)}
+.stats small{display:block;font-size:11px;color:var(--muted)}.stats b{display:block;font-size:19px;margin-top:4px}
+.ticket{border-radius:26px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid var(--line)}
+.ttop{background:linear-gradient(135deg,#223A5E,#2B4A75,#355982);color:#fff;padding:20px 20px 24px}
+.ttop .big{font-size:48px;font-weight:700;line-height:1;letter-spacing:-.01em}
+.perf{position:relative;height:0}.perf::before,.perf::after{content:"";position:absolute;top:-12px;width:24px;height:24px;border-radius:50%;background:var(--bg)}
+.perf::before{inset-inline-start:-12px}.perf::after{inset-inline-end:-12px}
+.tb{padding:20px}
+.box{background:var(--bg);border-radius:16px;padding:14px}
+.box small{display:flex;gap:4px;align-items:center;font-size:11.5px;color:var(--muted)}.box b{display:block;font-size:26px;margin-top:4px;line-height:1}
+.bar{height:10px;background:rgba(208,225,242,.7);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--navy));transition:width .7s}
+[dir=rtl] .bar i{background:linear-gradient(270deg,var(--accent),var(--navy))}
+.live{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:99px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--pale)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 0 0 rgba(39,150,107,.6);animation:pl 1.6s infinite}
+@keyframes pl{to{box-shadow:0 0 0 8px rgba(39,150,107,0)}}
+.called{background:var(--success);color:#fff;border-radius:20px;padding:16px;display:flex;gap:12px;align-items:center;box-shadow:0 10px 30px rgba(39,150,107,.3);animation:pop .5s}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+.sheetbg{position:absolute;inset:0;background:rgba(34,58,94,.4);z-index:40;display:flex;align-items:flex-end}
+.sheet{background:#fff;width:100%;border-radius:28px 28px 0 0;padding:20px;animation:up .3s;max-height:90%;overflow:auto}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet h3{margin:0 0 8px;font-size:18px}
+.toast{position:absolute;top:12px;inset-inline:16px;z-index:60;background:var(--navy);color:#fff;border-radius:16px;padding:12px 16px;font-size:13.5px;font-weight:500;box-shadow:var(--float);animation:up2 .3s}
+.toast.e{background:var(--error)}
+@keyframes up2{from{transform:translateY(-10px);opacity:0}}
+.code{font-family:ui-monospace,Menlo,monospace;letter-spacing:.35em;text-align:center;font-size:20px;direction:ltr}
+.hint{display:flex;gap:10px;align-items:center;background:var(--warnbg);border:1px solid rgba(230,162,60,.3);color:var(--warnfg);border-radius:16px;padding:10px 12px;font-size:12.5px}
+.hint button{background:#fff;border-radius:10px;padding:6px 12px;font-weight:600;color:var(--navy);box-shadow:0 1px 3px rgba(34,58,94,.08)}
+.otp{display:flex;gap:8px;direction:ltr}.otp input{width:100%;height:56px;border:1px solid var(--line);border-radius:16px;text-align:center;font-size:22px;font-weight:600;outline:none}
+.otp input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(208,225,242,.6)}
+.list>*+*{border-top:1px solid var(--line)}
+.li{display:flex;align-items:center;gap:12px;padding:14px 16px;width:100%;text-align:start;font-size:14.5px}
+.li .ic{width:36px;height:36px;border-radius:12px;background:rgba(208,225,242,.55);display:grid;place-items:center;color:var(--deep);flex:none}
+.empty{text-align:center;padding:56px 24px}
+.empty .ic{width:80px;height:80px;border-radius:28px;background:linear-gradient(135deg,var(--pale),var(--bg));display:grid;place-items:center;margin:0 auto 18px;color:var(--deep)}
+.stars button{font-size:30px;color:#E1EAF3;padding:2px}.stars button.on{color:var(--warning)}
+.splash{flex:1;background:linear-gradient(180deg,#223A5E,#294770,#355982);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:760px}
+.splash .mk{width:128px;height:128px;border-radius:36px;background:#fff;display:grid;place-items:center;animation:pop .6s;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.seg{display:flex;background:#E8EFF7;border-radius:16px;padding:4px}.seg button{flex:1;border-radius:12px;padding:9px;font-size:13px;font-weight:600;color:var(--muted)}.seg button.on{background:#fff;color:var(--navy);box-shadow:0 1px 3px rgba(34,58,94,.08)}
+.tv{background:linear-gradient(135deg,#16294A,#223A5E,#355982);color:#fff;border-radius:28px;padding:22px;box-shadow:var(--float)}
+.tvg{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;margin-top:16px}
+.tvw{background:#fff;color:var(--navy);border-radius:22px;padding:18px}
+.table{width:100%;border-collapse:collapse;font-size:13px}.table th{font-size:11px;text-transform:uppercase;color:var(--muted);text-align:start;padding:10px 12px;background:rgba(243,248,253,.7);font-weight:600}.table td{padding:10px 12px;border-top:1px solid var(--line)}
+.sbtn{height:34px;border-radius:10px;padding:0 12px;font-size:12.5px;font-weight:600}
+@media (max-width:900px){.hero .wide{grid-template-columns:1fr;padding-block:40px}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}.g4,.g3{grid-template-columns:repeat(2,minmax(0,1fr))}.links{grid-template-columns:repeat(2,minmax(0,1fr))}.tvg{grid-template-columns:1fr}.hero h1{font-size:36px}}
+@media (max-width:520px){.g4,.g3,.g5{grid-template-columns:1fr}.stage{padding-block:0}.phone{border-radius:0;border:0;min-height:100vh}.hero-phone{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div id="app"></div>
+
+<script>
+(function(){
+"use strict";
+// ───────── helpers ─────────
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const load = (k, d) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } };
+const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+
+const S = load("masar.live.v1", null) || { lang: "ar", onb: false, user: null, ticket: null, notifs: [], history: [], favs: [], reviews: {} };
+const persist = () => save("masar.live.v1", S);
+const T = (ar, en) => S.lang === "ar" ? ar : en;
+
+// ───────── icons (lucide paths) ─────────
+const P = {
+  home:'<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .7-1.5l7-6a2 2 0 0 1 2.6 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  compass:'<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2 6.4-6.4 2 2-6.4z"/>',
+  ticket:'<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"/><path d="M13 5v2M13 17v2M13 11v2"/>',
+  bell:'<path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/><path d="M3.3 15.3A1 1 0 0 0 4 17h16a1 1 0 0 0 .7-1.7C19.4 14 18 12.5 18 8A6 6 0 0 0 6 8c0 4.5-1.4 6-2.7 7.3"/>',
+  user:'<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  back:'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  clock:'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  users:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8"/>',
+  pin:'<path d="M20 10c0 5-5.5 10.2-7.4 11.8a1 1 0 0 1-1.2 0C9.5 20.2 4 15 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/>',
+  search:'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
+  star:'<path d="M11.5 2.3a.5.5 0 0 1 1 0l2.3 4.7a2 2 0 0 0 1.6 1.1l5.2.8a.5.5 0 0 1 .3.9l-3.8 3.7a2 2 0 0 0-.6 1.9l.9 5.2a.5.5 0 0 1-.8.6l-4.6-2.5a2 2 0 0 0-2 0l-4.6 2.5a.5.5 0 0 1-.8-.6l.9-5.2a2 2 0 0 0-.6-1.9L1.2 9.8a.5.5 0 0 1 .3-.9l5.2-.8a2 2 0 0 0 1.6-1.1z"/>',
+  heart:'<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/>',
+  qr:'<rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3M21 21v.01M12 7v3a2 2 0 0 1-2 2H7M3 12h.01M12 3h.01M12 16v.01M16 12h1M21 12v.01M12 21v-1"/>',
+  check:'<path d="M20 6 9 17l-5-5"/>',
+  timer:'<path d="M10 2h4M12 14l3-3"/><circle cx="12" cy="14" r="8"/>',
+  ban:'<circle cx="12" cy="12" r="10"/><path d="m4.9 4.9 14.2 14.2"/>',
+  spark:'<path d="M9.9 15.5A2 2 0 0 0 8.5 14.1l-6.1-1.6a.5.5 0 0 1 0-1l6.1-1.6a2 2 0 0 0 1.4-1.4l1.6-6.1a.5.5 0 0 1 1 0l1.6 6.1a2 2 0 0 0 1.4 1.4l6.1 1.6a.5.5 0 0 1 0 1l-6.1 1.6a2 2 0 0 0-1.4 1.4l-1.6 6.1a.5.5 0 0 1-1 0z"/>',
+  brain:'<path d="M12 5a3 3 0 1 0-6 .1 4 4 0 0 0-2.5 5.8 4 4 0 0 0 .6 6.6A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 6 .1 4 4 0 0 1 2.5 5.8 4 4 0 0 1-.6 6.6A4 4 0 1 1 12 18Z"/>',
+  shield:'<path d="M20 13c0 5-3.5 7.5-7.7 9a1 1 0 0 1-.7 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.2-2.7a1.2 1.2 0 0 1 1.5 0C14.5 3.8 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/>',
+  building:'<rect width="16" height="20" x="4" y="2" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"/>',
+  tv:'<rect width="20" height="14" x="2" y="3" rx="2"/><path d="M8 21h8M12 17v4"/>',
+  phone:'<rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/>',
+  lang:'<path d="m5 8 6 6M4 14l6-6 2-3M2 5h12M7 2h1M22 22l-5-10-5 10M14 18h6"/>',
+  health:'<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/><path d="M3.2 12H9l.5-1 2 4.5 2-7 1.5 3.5h5.3"/>',
+  gauge:'<path d="m12 14 4-4"/><path d="M3.3 19a10 10 0 1 1 17.4 0"/>',
+  cal:'<path d="M8 2v4M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
+  coffee:'<path d="M10 2v2M14 2v2M16 8a1 1 0 0 1 1 1v8a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1h14a4 4 0 1 1 0 8h-1M6 2v2"/>',
+  scissors:'<circle cx="6" cy="6" r="3"/><path d="M8.1 8.1 12 12M20 4 8.1 15.9"/><circle cx="6" cy="18" r="3"/><path d="M14.8 14.8 20 20"/>',
+  steth:'<path d="M11 2v2M5 2v2M5 3H4a2 2 0 0 0-2 2v4a6 6 0 0 0 12 0V5a2 2 0 0 0-2-2h-1M8 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/>',
+  hospital:'<path d="M12 6v4M14 14h-4M14 18h-4M14 8h-4M18 12h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2"/><path d="M18 22V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v18"/>',
+  car:'<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>',
+  land:'<path d="M10 18v-7M14 18v-7M18 18v-7M6 18v-7M3 22h18M12 2l8 5H4z"/>',
+  basket:'<path d="m15 11-1 9M19 11l-4-7M2 11h20M3.5 11l1.6 7.4a2 2 0 0 0 2 1.6h9.8a2 2 0 0 0 2-1.6l1.7-7.4M4.5 15.5h15M5 11l4-7M9 11l1 9"/>',
+  bank:'<rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/>',
+  bag:'<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/>',
+  vase:'<path d="M10 2v5.6c0 1-.6 1.9-1.4 2.4C6.3 11.4 5 14 5 17c0 3 2 5 7 5s7-2 7-5c0-3-1.3-5.6-3.6-7-.8-.5-1.4-1.4-1.4-2.4V2M8 2h8"/>',
+  logout:'<path d="m16 17 5-5-5-5M21 12H9M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>',
+  pinok:'<path d="M18.4 10.2C17.7 14.6 13 19 12.6 19.8a1 1 0 0 1-1.2 0C9.5 18.2 4 13 4 8a8 8 0 0 1 13.8-5.5"/><circle cx="12" cy="8" r="3"/><path d="m16 18 2 2 4-4"/>',
+  history:'<path d="M3 12a9 9 0 1 0 9-9 9.8 9.8 0 0 0-6.7 2.7L3 8"/><path d="M3 3v5h5M12 7v5l4 2"/>',
+  help:'<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/>',
+};
+const I = (n, s = 20, w = 1.8) => `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n] || ""}</svg>`;
+const LOGO = (s = 40, white = false) => `<svg width="${s}" height="${s}" viewBox="0 0 100 100" fill="none" aria-hidden="true"><defs><linearGradient id="ga${s}${white?1:0}" x1="30" y1="80" x2="92" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="${white?"#fff":"#2F86E8"}" stop-opacity="0"/><stop offset=".35" stop-color="${white?"#D0E1F2":"#6AAEEA"}"/><stop offset="1" stop-color="${white?"#fff":"#2F86E8"}"/></linearGradient></defs><path d="M47 30 A26 26 0 1 1 60 72 L44 76" stroke="url(#ga${s}${white?1:0})" stroke-width="5" stroke-linecap="round"/><path d="M70 26 V38 H79" stroke="${white?"#fff":"#163564"}" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="60" cy="47" r="6.4" fill="${white?"#9FC0E3":"#6AAEEA"}" stroke="${white?"#223A5E":"#fff"}" stroke-width="2"/><path d="M51 70 V62 C51 57 55 53.5 60 53.5 C65 53.5 69 57 69 62 V67.5 Z" fill="${white?"#9FC0E3":"#6AAEEA"}" stroke="${white?"#223A5E":"#fff"}" stroke-width="2"/><circle cx="46" cy="50" r="7.4" fill="${white?"#D0E1F2":"#3A78C4"}" stroke="${white?"#223A5E":"#fff"}" stroke-width="2"/><path d="M35.5 75 V66 C35.5 60.5 40 56.5 46 56.5 C52 56.5 56.5 60.5 56.5 66 V71.5 Z" fill="${white?"#D0E1F2":"#3A78C4"}" stroke="${white?"#223A5E":"#fff"}" stroke-width="2"/><circle cx="29" cy="53" r="9" fill="${white?"#fff":"#1F3F78"}" stroke="${white?"#223A5E":"#fff"}" stroke-width="2"/><path d="M16 80 V71 C16 64.5 21.5 60 29 60 C36.5 60 42 64.5 42 71 V76 Q29 79.5 16 80 Z" fill="${white?"#fff":"#1F3F78"}" stroke="${white?"#223A5E":"#fff"}" stroke-width="2"/></svg>`;
+
+// ───────── demo data (fictional establishments) ─────────
+const CATS = [
+  ["food","coffee","مطاعم ومقاهي","Restaurants & Cafes"],["salon","scissors","صالونات وحلاقة","Salons & Barbershops"],["clinic","steth","عيادات","Clinics"],["hosp","hospital","مستشفيات ومراكز طبية","Hospitals"],
+  ["car","car","صيانة وغسيل السيارات","Car Repair & Wash"],["fun","ticket","أماكن الترفيه","Entertainment"],["event","cal","فعاليات وأنشطة","Events"],["gov","land","مراكز حكومية","Government Centers"],
+  ["market","basket","الجمعيات والأسواق","Central Markets"],["bank","bank","البنوك","Banks"],["retail","bag","متاجر التجزئة","Retail Stores"],["museum","vase","المتاحف","Museums"],
+];
+const PLACES = [
+  {id:"oasis",cat:"salon",ar:"صالون الواحة",en:"Oasis Grooming Lounge",ini:"OG",hue:212,area:["السالمية","Salmiya"],km:0.6,wait:5,serving:"C-009",rating:4.7,rc:128,qt:"standard",svc:[["cut","قص الشعر","Haircut",20,"A"],["beard","تهذيب اللحية","Beard Trim",15,"B"],["full","الخدمة الكاملة","Full Service",35,"C"]],about:["صالون حلاقة عصري للقصات الكلاسيكية وتهذيب اللحية.","Modern barbershop for classic cuts and beard styling."],hours:"09:00 – 23:00"},
+  {id:"qahwa",cat:"food",ar:"بيت القهوة",en:"Qahwa House",ini:"QH",hue:28,area:["السالمية","Salmiya"],km:1.2,wait:7,serving:"T-031",rating:4.6,rc:240,qt:"standard",svc:[["t2","طاولة لشخص أو شخصين","Table for 1–2",12,"T"],["t6","طاولة من 3 إلى 6","Table for 3–6",18,"G"]],about:["قهوة مختصة وفطور، انضم لقائمة انتظار الطاولات عن بُعد.","Specialty coffee; join the table waitlist remotely."],hours:"07:00 – 01:00"},
+  {id:"shifa",cat:"clinic",ar:"عيادة دار الشفاء",en:"Dar Al Shifa Clinic",ini:"DS",hue:168,area:["حولي","Hawalli"],km:3.4,wait:4,serving:"M-014",rating:4.8,rc:96,qt:"healthcare",svc:[["gp","استشارة عامة","General Consultation",15,"M"]],about:["طب الأسرة والأطفال. الأولوية الطبية يحددها الطاقم الطبي فقط.","Family medicine. Medical priority is decided by clinical staff only."],hours:"08:00 – 21:00"},
+  {id:"gmc",cat:"hosp",ar:"المركز الطبي الخليجي",en:"Gulf Medical Center",ini:"GM",hue:0,area:["الشويخ","Shuwaikh"],km:6.1,wait:9,serving:"L-042",rating:4.5,rc:310,qt:"healthcare",svc:[["lab","التحاليل المخبرية","Laboratory Tests",8,"L"],["xray","الأشعة","Radiology",15,"R"]],about:["عيادات خارجية ومختبرات وأشعة.","Outpatient clinics, labs and radiology."],hours:"07:00 – 22:00"},
+  {id:"sparkle",cat:"car",ar:"سبارك لغسيل السيارات",en:"Sparkle Car Spa",ini:"SC",hue:200,area:["الفنطاس","Fintas"],km:9.8,wait:3,serving:"W-011",rating:4.4,rc:77,qt:"standard",svc:[["ext","غسيل خارجي","Exterior Wash",20,"W"],["full","تنظيف شامل","Full Detailing",60,"F"]],about:["غسيل يدوي وتنظيف داخلي وتلميع.","Hand wash, interior detailing and polish."],hours:"08:00 – 22:00"},
+  {id:"skyline",cat:"fun",ar:"سكاي لاين بولينج",en:"Skyline Bowling",ini:"SB",hue:262,area:["السالمية","Salmiya"],km:0.9,wait:2,serving:"S-008",rating:4.6,rc:150,qt:"timed",svc:[["lane","جلسة بولينج (ساعة)","Lane Session (1h)",60,"S"]],about:["دخول بمواعيد وسعة محدودة.","Timed entry with limited capacity."],hours:"14:00 – 00:00"},
+  {id:"civil",cat:"gov",ar:"مركز الخدمات المدنية (تجريبي)",en:"Civil Services Center (Demo)",ini:"CS",hue:150,area:["حولي","Hawalli"],km:3.1,wait:12,serving:"I-087",rating:4.2,rc:410,qt:"standard",svc:[["id","خدمات البطاقة","ID Card Services",10,"I"],["docs","تصديق المستندات","Document Attestation",8,"C"]],about:["نموذج تجريبي لقاعة خدمات حكومية — ليست خدمة رسمية.","Demonstration of a service hall — not an official service."],hours:"07:30 – 14:00"},
+  {id:"fields",cat:"market",ar:"جمعية الحقول الطازجة",en:"Fresh Fields Co-op",ini:"FF",hue:120,area:["الجهراء","Jahra"],km:18.2,wait:6,serving:"K-055",rating:4.3,rc:88,qt:"walkin",svc:[["butch","قسم الملحمة","Butchery Counter",6,"K"]],about:["أقسام اللحوم والأسماك والمخبز.","Butchery, fish and bakery counters."],hours:"07:00 – 23:00"},
+  {id:"horizon",cat:"bank",ar:"بنك الأفق الخليجي",en:"Gulf Horizon Bank",ini:"GH",hue:225,area:["مدينة الكويت","Kuwait City"],km:7.4,wait:8,serving:"S-063",rating:4.4,rc:205,qt:"standard",svc:[["teller","الصراف","Teller",6,"T"],["cs","خدمة العملاء","Customer Service",15,"S"]],about:["الحسابات والبطاقات وخدمة العملاء.","Accounts, cards and customer service."],hours:"08:00 – 15:00"},
+  {id:"tech",cat:"retail",ar:"متجر تك بوينت",en:"TechPoint Store",ini:"TP",hue:250,area:["الري","Al Rai"],km:8.0,wait:2,serving:"R-019",rating:4.5,rc:64,qt:"standard",svc:[["repair","مكتب الصيانة","Repair Desk",15,"R"],["pick","استلام الطلبات","Order Pickup",4,"P"]],about:["إلكترونيات مع مكتب إعداد وصيانة.","Electronics with a setup & repair desk."],hours:"10:00 – 22:00"},
+  {id:"heritage",cat:"museum",ar:"متحف بيت التراث",en:"Heritage House Museum",ini:"HH",hue:32,area:["مدينة الكويت","Kuwait City"],km:7.9,wait:0,serving:"V-022",rating:4.9,rc:132,qt:"timed",svc:[["entry","دخول القاعات","Gallery Entry",60,"V"]],about:["التراث البحري واللؤلؤ في الكويت.","Kuwaiti maritime and pearling heritage."],hours:"09:00 – 19:00"},
+  {id:"makers",cat:"event",ar:"معرض صنّاع الخليج",en:"Gulf Makers Fair",ini:"GF",hue:12,area:["مدينة الكويت","Kuwait City"],km:8.3,wait:0,serving:"E-140",rating:4.7,rc:58,qt:"timed",svc:[["entry","دخول عام","General Entry",90,"E"]],about:["صناع محليون وحرف وأطعمة — الدخول حسب الفترة.","Local makers and crafts — entry by time slot."],hours:"16:00 – 23:00"},
+];
+const QT = {standard:["طابور خدمة","Service queue"],healthcare:["طابور رعاية صحية","Healthcare queue"],timed:["دخول بموعد","Timed entry"],walkin:["طابور حضوري","Walk-in queue"]};
+const P_ = (id) => PLACES.find((p) => p.id === id);
+const name = (p) => T(p.ar, p.en);
+const est = (p, ahead, dur) => { const servers = 3; const mid = (ahead * (dur || 15)) / servers; const lo = Math.max(0, Math.floor(mid * .8)); return [lo, Math.max(lo + 1, Math.ceil(mid * 1.25 + 1))]; };
+const range = ([a, b]) => b <= 2 ? T("الآن", "Now") : `<span class="num">${a}–${b}</span> ${T("د", "min")}`;
+const checkCode = () => { const w = Math.floor(Date.now() / 300000); const al = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let x = (w * 2654435761) >>> 0, o = ""; for (let i = 0; i < 6; i++) { o += al[x % 32]; x = Math.floor(x / 32) ^ ((w + i) * 40503); x >>>= 0; } return o; };
+const fmtTime = (ts) => new Intl.DateTimeFormat(S.lang === "ar" ? "ar-KW" : "en-GB", { hour: "numeric", minute: "2-digit", numberingSystem: "latn" }).format(ts);
+
+// ───────── state actions ─────────
+let UI = { route: "tour", sheet: null, toast: null, q: "", cat: null, sort: "near", err: "", slot: null, onb: 0, stars: [0,0,0] };
+function toast(t, e) { UI.toast = { t, e }; render(); clearTimeout(toast.h); toast.h = setTimeout(() => { UI.toast = null; render(); }, 3000); }
+function notify(type, t) { const p = P_(t.place); S.notifs.unshift({ id: Date.now() + Math.random(), type, ticket: t.number, place: p.id, at: Date.now(), read: false }); persist(); }
+const NT = {
+  BOOK:["تم تأكيد الحجز","Booking confirmed","تذكرتك {t} في {p}.","Ticket {t} at {p}."],
+  FIVE:["خمسة عملاء قبلك","Five customers ahead","يوجد 5 أشخاص قبل التذكرة {t}.","5 people are ahead of ticket {t}."],
+  NEAR:["دورك يقترب","Your turn is approaching","بقي 3 قبلك فقط في {p}. ابدأ بالتوجه.","Only 3 ahead at {p}. Start heading over."],
+  ARRIVE:["يرجى تأكيد الوصول","Please confirm arrival","اقترب دورك في {p}. أكّد وصولك عند حضورك.","You're almost up at {p}. Confirm arrival."],
+  NEXT:["دورك التالي","Your turn is next","التذكرة {t} هي التالية.","Ticket {t} is next."],
+  CALLED:["تم استدعاؤك","You have been called","التذكرة {t} — توجّه إلى الكاونتر 2.","Ticket {t} — please go to counter 2."],
+  POST:["تم تأجيل الدور","Turn postponed","تأخرت التذكرة {t} ثلاثة مراكز.","Ticket {t} moved back 3 places."],
+  CANCEL:["تم إلغاء الحجز","Booking cancelled","تم إلغاء التذكرة {t}.","Ticket {t} was cancelled."],
+  DONE:["اكتملت الخدمة","Service completed","شكراً لزيارتك {p}. قيّم تجربتك.","Thanks for visiting {p}. Rate your visit."],
+};
+function book(pid, sid) {
+  const p = P_(pid), s = p.svc.find((x) => x[0] === sid);
+  if (S.ticket && ["WAITING","ARRIVED","CALLED","IN_SERVICE"].includes(S.ticket.status)) { toast(T("لديك تذكرة نشطة بالفعل. ألغها أولاً لتجربة حجز جديد.", "You already have an active ticket. Cancel it first."), true); return false; }
+  const seq = 10 + Math.floor(Math.random() * 20);
+  const ahead = p.qt === "timed" ? 0 : Math.max(4, p.wait);
+  S.ticket = { place: pid, svc: sid, dur: s[3], number: `${s[4]}-${String(seq).padStart(3, "0")}`, ahead, start: ahead, status: "WAITING", arrived: false, postponed: false, at: Date.now(), slot: UI.slot, notified: [], log: [["WAITING", Date.now()]] };
+  notify("BOOK", S.ticket); persist(); return true;
+}
+function tick() {
+  const t = S.ticket; if (!t) return;
+  const was = t.status;
+  if ((t.status === "WAITING" || t.status === "ARRIVED") && t.ahead > 0) {
+    t.ahead--;
+    const f = (k, type) => { if (!t.notified.includes(k)) { t.notified.push(k); notify(type, t); } };
+    if (t.ahead === 5) f(5, "FIVE");
+    if (t.ahead === 3) f(3, "NEAR");
+    if (t.ahead <= 2 && !t.arrived) f(2, "ARRIVE");
+    if (t.ahead === 0) f(0, "NEXT");
+  } else if ((t.status === "WAITING" || t.status === "ARRIVED") && t.ahead === 0) {
+    t.status = "CALLED"; t.log.push(["CALLED", Date.now()]); notify("CALLED", t); try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {}
+  } else if (t.status === "CALLED" && t.arrived) {
+    t.status = "IN_SERVICE"; t.svcTicks = 0; t.log.push(["IN_SERVICE", Date.now()]);
+  } else if (t.status === "IN_SERVICE") {
+    t.svcTicks = (t.svcTicks || 0) + 1;
+    if (t.svcTicks >= 2) { t.status = "COMPLETED"; t.log.push(["COMPLETED", Date.now()]); notify("DONE", t); S.history.unshift({ ...t }); }
+  }
+  // ambient movement of other places
+  PLACES.forEach((p) => { if (p.qt !== "timed" && Math.random() < .3) p.wait = Math.max(1, p.wait + (Math.random() < .5 ? -1 : 1)); });
+  persist();
+  if (was !== t.status || UI.route === "ticket" || UI.route === "home" || UI.route === "queue") render();
+}
+setInterval(tick, 4500);
+
+// ───────── routing ─────────
+const APP_ROUTES = ["splash","onb","login","otp","home","explore","place","services","book","success","ticket","queue","notifs","history","profile","review"];
+function go(r) { UI.sheet = null; UI.err = ""; location.hash = r; }
+function parse() { const h = (location.hash || "#tour").slice(1); const [r, a, b] = h.split("-"); UI.route = r || "tour"; UI.a = a; UI.b = b; }
+window.addEventListener("hashchange", () => { parse(); render(); const s = $(".scr"); if (s) s.scrollTop = 0; else window.scrollTo(0, 0); });
+
+// ───────── views ─────────
+const hdr = (title, back = true, right = "") => `<div class="hdr">${back ? `<button class="icb" data-back aria-label="${T("رجوع","Back")}"><span class="flip">${I("back")}</span></button>` : ""}<h1>${title}</h1>${right}</div>`;
+const statusB = (s) => { const m = {WAITING:["بالانتظار","Waiting","blue"],ARRIVED:["وصل","Arrived","blue"],CALLED:["تم الاستدعاء","Called","nv"],IN_SERVICE:["قيد الخدمة","In service","nv"],COMPLETED:["مكتمل","Completed","ok"],CANCELLED:["ملغي","Cancelled","mut"]}[s]; return `<span class="b ${m[2]}"><i class="dot" style="background:currentColor"></i>${T(m[0], m[1])}</span>`; };
+const logo = (p, s = 52) => `<span class="logo" style="width:${s}px;height:${s}px;font-size:${s * .32}px;background:linear-gradient(140deg,hsl(${p.hue} 42% 34%),hsl(${p.hue} 48% 52%))">${p.ini}</span>`;
+const active = () => S.ticket && ["WAITING","ARRIVED","CALLED","IN_SERVICE"].includes(S.ticket.status);
+
+function placeCard(p) {
+  const s0 = p.svc[0];
+  const w = p.qt === "timed" ? `<span class="muted">${T(...QT.timed)}</span>` : range(est(p, p.wait, s0[3]));
+  return `<button class="card pc" data-go="place-${p.id}">${logo(p)}<div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;gap:8px"><div style="min-width:0"><h3>${esc(name(p))}</h3><div class="muted" style="font-size:12.5px;margin-top:2px">${T(CATS.find(c=>c[0]===p.cat)[2],CATS.find(c=>c[0]===p.cat)[3])} · ${T(...p.area)}</div></div><span class="tagd">${T("تجريبي","DEMO")}</span></div>
+  <div class="meta"><span style="color:var(--success);font-weight:600"><i class="dot" style="background:var(--success)"></i> ${T("مفتوح","Open")}</span>${p.qt !== "timed" ? `<span>${I("users",14)} <span class="num">${p.wait}</span> ${T("بالانتظار","waiting")}</span>` : ""}<span style="font-weight:600">${I("clock",14)} ${w}</span><span class="muted">${I("pin",14)} <span class="num">${p.km}</span> ${T("كم","km")}</span><span class="muted">★ <span class="num">${p.rating}</span></span></div></div></button>`;
+}
+
+const V = {};
+V.splash = () => { setTimeout(() => { if (UI.route === "splash") go(S.onb ? (S.user ? "home" : "login") : "onb"); }, 1900); return `<div class="splash"><div class="mk">${LOGO(104)}</div><div style="margin-top:28px;font-family:var(--f-en);font-size:28px;font-weight:600;letter-spacing:.34em" dir="ltr">MASAR</div><div style="font-size:22px;color:var(--pale);margin-top:2px">مَسار</div><div style="margin-top:22px;color:var(--light);font-size:14px" dir="ltr">Your Time. Your Turn.</div></div>`; };
+V.onb = () => {
+  const sl = [["clock","وقتك مهم.","Your Time Matters.","تجاوز الوقوف في الطابور. انتظر أينما شئت بينما يحفظ مَسار مكانك.","Skip the physical line. Wait anywhere while MASAR holds your place."],["pin","دورك، من أي مكان.","Your Turn, Anywhere.","احجز دورك عن بُعد وتابع موقعك والوقت المتوقع لحظة بلحظة.","Book remotely and follow your position and wait in real time."],["bell","ابقَ على اطلاع.","Stay Updated.","تصلك التنبيهات مع اقتراب دورك، ثم أكّد وصولك بمسحة واحدة.","Get alerts as your turn nears, then confirm arrival with one scan."]][UI.onb];
+  return `<div style="background:#fff;flex:1;display:flex;flex-direction:column;padding:16px 24px 28px;min-height:760px"><div style="display:flex;justify-content:space-between"><button class="pill" data-lang>${I("lang",14)} ${T("English","العربية")}</button><button class="muted" data-onbdone>${T("تخطي","Skip")}</button></div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center"><div style="width:220px;height:220px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,var(--pale),#fff);display:grid;place-items:center"><div style="width:96px;height:96px;border-radius:30px;background:linear-gradient(135deg,var(--navy),var(--medium));color:#fff;display:grid;place-items:center;animation:pop .5s">${I(sl[0],44,1.6)}</div></div>
+  <h2 style="font-size:26px;margin:36px 0 10px">${T(sl[1],sl[2])}</h2><p class="muted" style="font-size:15px;line-height:1.7;max-width:300px;margin:0 auto">${T(sl[3],sl[4])}</p></div>
+  <div style="display:flex;justify-content:center;gap:8px;margin-bottom:28px">${[0,1,2].map(i=>`<span style="height:8px;border-radius:9px;background:${i===UI.onb?"var(--navy)":"var(--pale)"};width:${i===UI.onb?28:8}px"></span>`).join("")}</div>
+  <button class="btn p" data-onbnext>${UI.onb === 2 ? T("ابدأ الآن","Get Started") : T("التالي","Next")}</button></div>`;
+};
+V.login = () => `<div style="background:#fff;flex:1;padding:12px 24px 28px;min-height:760px"><div style="display:flex;justify-content:space-between;align-items:center;height:48px"><span class="brand">${LOGO(30)}<b>MASAR</b></span><button class="pill" data-lang>${I("lang",14)} ${T("English","العربية")}</button></div>
+  <h2 style="font-size:26px;margin:32px 0 6px">${T("أهلاً بك في مَسار","Welcome to MASAR")}</h2><p class="muted" style="margin:0 0 28px">${T("سجّل برقم هاتفك للمتابعة. نطلب فقط ما نحتاجه.","Sign in with your mobile number. We only ask for what we need.")}</p>
+  <label class="l" for="nm">${T("الاسم","Name")}</label><input class="inp" id="nm" autocomplete="name" placeholder="${T("مثال: سارة","e.g. Sara")}">
+  <div style="height:14px"></div><label class="l" for="ph">${T("رقم الهاتف","Mobile number")}</label>
+  <div style="display:flex;direction:ltr;border:1px solid var(--line);border-radius:16px;overflow:hidden;height:50px;background:#fff"><span style="display:grid;place-items:center;padding:0 12px;background:var(--bg);border-inline-end:1px solid var(--line);font-weight:500;white-space:nowrap">🇰🇼 +965</span><input id="ph" inputmode="tel" placeholder="5XXX XXXX" style="flex:1;border:0;outline:none;padding:0 12px;font-size:16px;letter-spacing:.06em;min-width:0"></div>
+  ${UI.err ? `<div class="err">${UI.err}</div>` : ""}
+  <div style="height:22px"></div><button class="btn p" data-sendotp>${T("إرسال رمز التحقق","Send verification code")}</button>
+  <div style="display:flex;align-items:center;gap:12px;margin:22px 0;color:var(--muted);font-size:12px"><span style="flex:1;height:1px;background:var(--line)"></span>${T("أو","or")}<span style="flex:1;height:1px;background:var(--line)"></span></div>
+  <button class="btn o" data-go="home">${T("تصفح كزائر","Explore as guest")}</button>
+  <p class="muted" style="text-align:center;font-size:12px;margin-top:22px">${T("بالمتابعة فإنك توافق على الشروط وسياسة الخصوصية.","By continuing you agree to the Terms and Privacy Policy.")}</p></div>`;
+V.otp = () => `<div style="background:#fff;flex:1;padding:12px 24px 28px;min-height:760px">${hdr("", true)}<h2 style="font-size:26px;margin:16px 0 6px">${T("تحقق من رقمك","Verify your number")}</h2><p class="muted">${T("أدخل الرمز المكوّن من 6 أرقام المرسل إلى","Enter the 6-digit code sent to")} <b dir="ltr" style="color:var(--navy)">+965 ${esc(UI.phone || "")}</b></p>
+  <div class="hint" style="margin:18px 0">${I("help",16)}<span style="flex:1">${T("وضع تجريبي: لا يتم إرسال رسالة. استخدم الرمز","Demo mode: no SMS is sent. Use code")} <b class="num">123456</b></span><button data-fillotp>${T("استخدمه","Use")}</button></div>
+  <div class="otp">${[0,1,2,3,4,5].map(i=>`<input id="o${i}" inputmode="numeric" maxlength="6" aria-label="Digit ${i+1}">`).join("")}</div>${UI.err ? `<div class="err">${UI.err}</div>` : ""}
+  <div style="height:24px"></div><button class="btn p" data-verify>${T("تحقق","Verify")}</button></div>`;
+
+V.home = () => {
+  const t = active() ? S.ticket : null; const unread = S.notifs.some((n) => !n.read);
+  const near = [...PLACES].sort((a, b) => a.km - b.km).slice(0, 6), low = PLACES.filter(p => p.qt !== "timed").sort((a, b) => a.wait - b.wait).slice(0, 6);
+  const tile = (p) => `<button class="card" data-go="place-${p.id}" style="width:210px;flex:none;overflow:hidden;text-align:start;padding:0"><div style="height:84px;position:relative;background:linear-gradient(135deg,hsl(${p.hue} 40% 30%),hsl(${p.hue} 45% 55%));padding:12px;display:flex;justify-content:space-between;align-items:flex-start"><span class="b" style="background:rgba(255,255,255,.18);color:#fff">● ${T("مفتوح","Open")}</span><span class="tagd" style="background:#fff">${T("تجريبي","DEMO")}</span></div><div style="padding:12px"><b style="font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(name(p))}</b><span class="muted" style="font-size:12px">${T(...p.area)} · <span class="num">${p.km}</span> ${T("كم","km")}</span><div style="display:flex;justify-content:space-between;background:var(--bg);border-radius:12px;padding:8px 10px;margin-top:10px;font-size:12px"><span class="muted">${I("users",14)} <b class="num" style="color:var(--navy)">${p.qt==="timed"?"—":p.wait}</b></span><b>${p.qt==="timed"?T("بموعد","Timed"):range(est(p,p.wait,p.svc[0][3]))}</b></div></div></button>`;
+  return `<div style="background:linear-gradient(#fff,var(--bg));padding:16px 20px 14px"><div style="display:flex;justify-content:space-between;align-items:center"><span class="brand">${LOGO(30)}<b>MASAR</b></span><div style="display:flex;gap:4px;align-items:center"><button class="icb" data-go="notifs" aria-label="${T("التنبيهات","Alerts")}" style="position:relative">${I("bell",21)}${unread?'<i class="dot" style="position:absolute;top:10px;inset-inline-end:10px;background:var(--error);width:8px;height:8px"></i>':""}</button><button data-go="profile" style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--deep),var(--accent));color:#fff;font-weight:700;font-size:13px">${esc((S.user?.name||"؟").slice(0,1))}</button></div></div>
+  <h1 style="font-size:24px;margin:18px 0 2px">${S.user ? T("مرحباً، ","Hello, ") + esc(S.user.name) : T("مرحباً","Hello")} 👋</h1><div class="muted" style="font-size:13px">${I("pin",14)} ${T("منطقتك:","Your area:")} <b style="color:var(--navy)">${T("السالمية","Salmiya")}</b></div>
+  <button data-go="explore" style="margin-top:14px;width:100%;height:48px;border:1px solid var(--line);border-radius:16px;background:#fff;display:flex;align-items:center;gap:10px;padding:0 16px;color:var(--muted);font-size:14px">${I("search",18)} ${T("ابحث عن خدمة أو مكان","Search for services or places")}</button></div>
+  ${t ? `<button data-go="ticket" style="display:block;width:calc(100% - 40px);margin:4px 20px 0;text-align:start;border-radius:22px;padding:16px;color:#fff;background:linear-gradient(135deg,var(--navy),var(--deep));box-shadow:var(--float)"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--light)"><span>${T("تذكرتك الحالية","Your active ticket")}</span><span class="live"><i></i>${T("مباشر","Live")}</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px"><div><b style="font-size:15px">${esc(name(P_(t.place)))}</b><div style="margin-top:4px">${statusB(t.status)}</div></div><div style="text-align:end"><div class="num" style="font-size:26px;font-weight:700">${t.number}</div>${t.status==="WAITING"||t.status==="ARRIVED"?`<div style="font-size:11px;color:var(--light)"><span class="num">${t.ahead}</span> ${T("قبلك","ahead")}</div>`:""}</div></div></button>`
+  : `<div class="card" style="margin:4px 20px 0;padding:16px"><b style="display:flex;gap:8px;align-items:center;font-size:15px">${I("spark",16)} ${T("جرّب مَسار خلال دقيقة","Try MASAR in 1 minute")}</b><ol style="margin:12px 0 0;padding-inline-start:18px;color:var(--muted);font-size:13px;line-height:1.9"><li>${T("اختر مكان مفتوح مثل صالون الواحة","Pick an open place like Oasis Grooming")}</li><li>${T("اختر الخدمة واحصل على رقمك","Choose a service and get your number")}</li><li>${T("تابع تذكرتك وهي تتحرك تلقائياً","Watch your ticket move automatically")}</li><li>${T("أكّد وصولك، ثم قيّم الخدمة","Confirm arrival, then rate the service")}</li></ol><button class="btn p" style="margin-top:14px;height:46px" data-go="place-oasis">${T("ابدأ مع صالون الواحة","Start with Oasis Grooming")}</button></div>`}
+  <div class="st"><h2>${T("الفئات الشائعة","Popular categories")}</h2><button data-go="explore">${T("عرض الكل","See all")}</button></div>
+  <div class="cats">${CATS.map(c=>`<button class="cat" data-cat="${c[0]}"><i>${I(c[1],25,1.7)}</i>${T(c[2],c[3])}</button>`).join("")}</div>
+  <div class="row" style="margin-top:22px">${[["near","الأقرب","Nearest"],["low","أقل انتظار","Lowest wait"],["pop","الأكثر شعبية","Most popular"]].map(f=>`<button class="chip" data-sort="${f[0]}">${T(f[1],f[2])}</button>`).join("")}</div>
+  <div class="st"><h2>${T("بالقرب منك","Nearby")}</h2><button data-go="explore">${T("عرض الكل","See all")}</button></div><div class="row" style="padding-bottom:6px">${near.map(tile).join("")}</div>
+  <div class="st"><h2>${T("أقل وقت انتظار","Lowest waiting time")}</h2></div><div class="row" style="padding-bottom:16px">${low.map(tile).join("")}</div>`;
+};
+V.explore = () => {
+  let list = PLACES.filter(p => (!UI.cat || p.cat === UI.cat) && (!UI.q || (p.ar + p.en + p.area.join("") + p.svc.map(s=>s[1]+s[2]).join("")).toLowerCase().includes(UI.q.toLowerCase())));
+  list = list.sort((a, b) => UI.sort === "low" ? (a.qt==="timed")-(b.qt==="timed") || a.wait - b.wait : UI.sort === "pop" ? b.rc - a.rc : a.km - b.km);
+  return `${hdr(T("استكشف","Explore"), false)}<div class="px"><div style="display:flex;align-items:center;gap:10px;height:48px;border:1px solid var(--line);border-radius:16px;background:#fff;padding:0 14px;color:var(--medium)">${I("search",18)}<input id="q" value="${esc(UI.q)}" placeholder="${T("ابحث عن خدمة أو مكان","Search for services or places")}" style="border:0;outline:none;flex:1;font-size:14.5px;min-width:0"></div></div>
+  <div class="row" style="margin-top:12px"><button class="chip ${!UI.cat?"on":""}" data-cat="">${T("الكل","All")}</button>${CATS.map(c=>`<button class="chip ${UI.cat===c[0]?"on":""}" data-cat="${c[0]}">${I(c[1],14)} ${T(c[2],c[3])}</button>`).join("")}</div>
+  <div class="row" style="margin-top:8px">${[["near","الأقرب","Nearest"],["low","أقل انتظار","Lowest wait"],["pop","الأكثر شعبية","Most popular"]].map(f=>`<button class="chip ${UI.sort===f[0]?"on":""}" data-sort="${f[0]}">${T(f[1],f[2])}</button>`).join("")}</div>
+  <p class="muted px" style="font-size:12px;font-weight:500;margin:14px 0 8px">${T(`${list.length} مكان`,`${list.length} places`)}</p>
+  <div class="px" style="display:grid;gap:12px;padding-bottom:16px">${list.length ? list.map(placeCard).join("") : `<div class="empty"><div class="ic">${I("search",34)}</div><b>${T("لا توجد نتائج","No places match")}</b><p class="muted">${T("جرّب بحثاً مختلفاً أو امسح التصفية.","Try another search or clear filters.")}</p><button class="btn s" style="width:auto;padding:0 20px;margin:0 auto" data-clear>${T("مسح التصفية","Clear filters")}</button></div>`}</div>`;
+};
+V.place = () => {
+  const p = P_(UI.a); if (!p) return V.home();
+  const fav = S.favs.includes(p.id); const s0 = p.svc[0];
+  const hours = [6,0,1,2,3,4,5].map(d => `<div style="display:flex;justify-content:space-between;padding:9px 16px;font-size:13.5px"><span>${T(["الأحد","الإثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"][d],["Sun","Mon","Tue","Wed","Thu","Fri","Sat"][d])}</span><span class="num muted">${p.hours}</span></div>`).join("");
+  const bars = [9,10,11,12,13,14,15,16,17,18,19,20,21,22].map((h, i) => { const v = .3 + Math.abs(Math.sin((h + p.hue) / 3)) * .7; const lv = v < .5 ? "var(--success)" : v < .75 ? "var(--warning)" : "var(--error)"; return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div title="${h}:00" style="width:100%;height:${Math.round(v*70)}px;border-radius:5px 5px 0 0;background:${lv};opacity:.75"></div><span style="font-size:9px" class="muted">${h%3===0?h:""}</span></div>`; }).join("");
+  return `<div style="height:190px;position:relative;background:linear-gradient(140deg,hsl(${p.hue} 42% 26%),hsl(${p.hue} 46% 50%))"><div style="position:absolute;inset:12px 12px auto;display:flex;justify-content:space-between"><button class="icb" style="background:#fff" data-back aria-label="${T("رجوع","Back")}"><span class="flip">${I("back")}</span></button><button class="icb" style="background:#fff;color:${fav?"var(--error)":"var(--navy)"}" data-fav="${p.id}" aria-label="${T("حفظ","Save")}">${I("heart",18)}</button></div></div>
+  <div class="px" style="margin-top:-46px;position:relative"><div class="card" style="padding:16px"><div style="display:flex;gap:12px;align-items:flex-start"><span style="margin-top:-38px;border:4px solid #fff;border-radius:20px">${logo(p,60)}</span><div style="flex:1;min-width:0"><h2 style="margin:0;font-size:19px">${esc(name(p))}</h2><div class="muted" style="font-size:13px">${T(CATS.find(c=>c[0]===p.cat)[2],CATS.find(c=>c[0]===p.cat)[3])} · ${T(...p.area)}</div></div><span class="tagd">${T("تجريبي","DEMO")}</span></div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:12px"><span class="b ok">● ${T("مفتوح الآن","Open now")}</span><span class="b blue">${T(...QT[p.qt])}</span><span class="muted" style="font-size:12.5px">★ <b class="num" style="color:var(--navy)">${p.rating}</b> (${p.rc})</span></div>
+  ${p.qt !== "timed" ? `<div class="stats"><div><small>${T("بالانتظار","Waiting")}</small><b class="num">${p.wait}</b></div><div><small>${T("الانتظار المتوقع","Est. wait")}</small><b style="font-size:15px">${range(est(p,p.wait,s0[3]))}</b></div><div><small>${T("الرقم الحالي","Now serving")}</small><b class="num">${p.serving}</b></div></div>` : ""}</div>
+  ${p.qt === "healthcare" ? `<div class="hint" style="margin-top:12px;background:rgba(208,225,242,.5);border-color:transparent;color:var(--deep)">${I("health",16)} ${T("تحدد الأولوية الطبية فقط من قبل الطاقم الطبي المخوّل في الفرع.","Medical priority is decided only by authorised clinical staff.")}</div>` : ""}
+  ${p.qt === "walkin" ? `<div class="hint" style="margin-top:12px">${I("qr",16)} ${T("هذا القسم حضوري: تنضم بمسح رمز الفرع عند وصولك.","Walk-in counter: join by scanning the branch code on arrival.")}</div>` : ""}
+  <h3 style="font-size:15px;margin:22px 0 8px">${T("نبذة","About")}</h3><p class="muted" style="margin:0;line-height:1.7;font-size:14px">${T(...p.about)}</p>
+  <h3 style="font-size:15px;margin:22px 0 8px">${T("الخدمات","Services")}</h3><div class="card list">${p.svc.map(s=>`<div style="display:flex;justify-content:space-between;padding:13px 16px"><span><b style="font-size:14px;font-weight:500">${T(s[1],s[2])}</b><br><span class="muted" style="font-size:12px">~<span class="num">${s[3]}</span> ${T("دقيقة","min")}</span></span></div>`).join("")}</div>
+  <h3 style="font-size:15px;margin:22px 0 8px">${I("cal",16)} ${T("أفضل وقت للزيارة اليوم","Best time to visit today")}</h3><div class="card" style="padding:16px"><div style="display:flex;align-items:flex-end;gap:3px;height:86px" dir="ltr">${bars}</div><div style="display:flex;gap:14px;font-size:11.5px;margin-top:10px" class="muted"><span><i class="dot" style="background:var(--success)"></i> ${T("هادئ","Quiet")}</span><span><i class="dot" style="background:var(--warning)"></i> ${T("متوسط","Moderate")}</span><span><i class="dot" style="background:var(--error)"></i> ${T("مزدحم","Busy")}</span></div><p class="muted" style="font-size:11.5px;margin:10px 0 0">${T("بناءً على سجل زيارات تجريبي.","Based on demo visit history.")}</p></div>
+  <h3 style="font-size:15px;margin:22px 0 8px">${T("ساعات العمل","Working hours")}</h3><div class="card list">${hours}</div>
+  <a class="btn o" style="margin-top:16px" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.area[1] + " Kuwait")}" target="_blank" rel="noopener">${I("pin",18)} ${T("الاتجاهات","Directions")}</a>
+  <div style="height:90px"></div></div>
+  <div style="position:absolute;bottom:0;inset-inline:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:12px 20px 16px;z-index:5"><button class="btn p" data-go="services-${p.id}">${T("احجز دورك","Book Your Turn")}</button></div>`;
+};
+V.services = () => { const p = P_(UI.a); return `${hdr(T("اختر الخدمة","Choose a service"))}<p class="muted px" style="margin:-6px 0 12px;font-size:12.5px">${esc(name(p))}</p><div class="px" style="display:grid;gap:12px">${p.svc.map(s=>`<button class="card" style="padding:16px;text-align:start" data-go="book-${p.id}-${s[0]}"><b style="font-size:15.5px">${T(s[1],s[2])}</b><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;font-size:12px"><span class="b mut">${I("clock",13)} ~<span class="num">${s[3]}</span> ${T("دقيقة","min")}</span><span class="b blue">${T(...QT[p.qt])}</span>${p.qt!=="timed"?`<span class="b mut">${I("users",13)} <span class="num">${p.wait}</span> ${T("في الطابور","in queue")}</span><span class="b nv">${range(est(p,p.wait,s[3]))}</span>`:""}</div></button>`).join("")}</div>`; };
+V.book = () => {
+  const p = P_(UI.a), s = p.svc.find(x=>x[0]===UI.b); const e = est(p,p.wait,s[3]);
+  const now = new Date(); const slots = Array.from({length:6},(_,i)=>{ const d = new Date(now); d.setMinutes(0,0,0); d.setHours(d.getHours()+1+i); return d.getTime(); });
+  const walk = p.qt === "walkin";
+  return `${hdr(T("تأكيد الحجز","Confirm booking"))}<div class="px" style="display:grid;gap:14px;padding-bottom:110px"><div class="card" style="padding:16px"><div style="display:flex;gap:12px;align-items:center">${logo(p,48)}<div><small class="muted">${T("المنشأة","Establishment")}</small><b style="display:block">${esc(name(p))}</b></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><div class="box"><small>${T("الخدمة","Service")}</small><b style="font-size:14px">${T(s[1],s[2])}</b></div><div class="box"><small>${T("نوع الطابور","Queue type")}</small><b style="font-size:14px">${T(...QT[p.qt])}</b></div>
+  ${p.qt!=="timed"?`<div class="box"><small>${I("users",13)} ${T("الأشخاص قبلك","People ahead")}</small><b class="num">${Math.max(4,p.wait)}</b></div><div class="box" style="background:var(--navy);color:#fff"><small style="color:var(--light)">${I("clock",13)} ${T("الانتظار المتوقع","Estimated wait")}</small><b style="font-size:20px">${range(est(p,Math.max(4,p.wait),s[3]))}</b></div>`:""}</div>
+  ${p.qt!=="timed"?`<p class="muted" style="font-size:11.5px;margin:12px 0 0;line-height:1.6">${T("نطاق تقديري يعتمد على عدد الأشخاص والموظفين ومدة الخدمة وأوقات الذروة.","Estimate range based on people ahead, staff, service time and peak hours.")}</p>`:""}</div>
+  ${p.qt==="timed"?`<div><b style="font-size:15px">${T("اختر الوقت","Choose a time")}</b><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px">${slots.map((t,i)=>`<button data-slot="${t}" class="card" style="padding:10px;text-align:center;${UI.slot===t?"background:var(--navy);color:#fff;border-color:var(--navy)":""}"><b class="num">${fmtTime(t)}</b><br><small style="font-size:11px;${UI.slot===t?"color:var(--light)":"color:var(--muted)"}">${i===2?T("ممتلئ","Full"):T(`متبقي ${8+i*3}`,`${8+i*3} left`)}</small></button>`).join("")}</div></div>`:""}
+  ${walk?`<div class="hint">${I("qr",16)}<span style="flex:1">${T("حجز حضوري: شاشة الفرع تعرض الرمز","On-site join: the branch screen shows")} <b class="num">${checkCode()}</b></span></div>`:""}
+  <p class="muted" style="font-size:12.5px;line-height:1.6;margin:0">${p.qt==="timed"?T("يمكنك الإلغاء في أي وقت قبل موعد دخولك.","You can cancel any time before your entry time."):T("يمكنك تأجيل دورك مرة واحدة والإلغاء قبل بدء الخدمة.","You can postpone once and cancel any time before service starts.")}</p></div>
+  <div style="position:absolute;bottom:0;inset-inline:0;background:rgba(255,255,255,.96);border-top:1px solid var(--line);padding:12px 20px 16px;z-index:5"><button class="btn p" data-confirm="${p.id}-${s[0]}" ${p.qt==="timed"&&!UI.slot?"disabled":""}>${S.user?T("أكّد واحصل على رقمي","Confirm & Get My Number"):T("سجّل الدخول للحجز","Sign in to book")}</button></div>`;
+};
+V.success = () => { const t = S.ticket; if (!t) return V.home(); const p = P_(t.place); return `<div style="flex:1;padding:56px 24px 28px;display:flex;flex-direction:column;background:linear-gradient(#fff,var(--bg));min-height:760px"><div style="flex:1;text-align:center"><div style="width:96px;height:96px;border-radius:50%;margin:0 auto;background:var(--success);color:#fff;display:grid;place-items:center;animation:pop .5s;box-shadow:0 12px 40px rgba(39,150,107,.35)">${I("check",48,2.6)}</div><h2 style="font-size:26px;margin:28px 0 6px">${T("أنت الآن في الطابور!","You're in the queue!")}</h2><p class="muted">${T("سنرسل لك تنبيهاً عند اقتراب دورك.","We'll notify you as your turn approaches.")}</p>
+  <div class="card" style="padding:24px;margin-top:24px"><small class="muted" style="letter-spacing:.1em">${T("رقم التذكرة","TICKET NUMBER")}</small><div class="num" style="font-size:52px;font-weight:700;margin-top:4px">${t.number}</div><b style="display:block;margin-top:8px">${esc(name(p))}</b><span class="muted" style="font-size:13px">${T(p.svc.find(s=>s[0]===t.svc)[1],p.svc.find(s=>s[0]===t.svc)[2])}</span></div></div>
+  <button class="btn p" data-go="ticket">${T("عرض تذكرتي","View my ticket")}</button><button class="btn" style="margin-top:8px" data-go="home">${T("العودة للرئيسية","Back to home")}</button></div>`; };
+V.ticket = () => {
+  const t = S.ticket; if (!t) return V.queue();
+  const p = P_(t.place), s = p.svc.find(x=>x[0]===t.svc); const inLine = t.status==="WAITING"||t.status==="ARRIVED";
+  const e = est(p, t.ahead, t.dur); const prog = inLine ? Math.max(.05, Math.min(.97, (t.start - t.ahead + .5) / (t.start + 1))) : 1;
+  if (t.status === "COMPLETED") return `${hdr(T("دوري","My Queue"))}<div class="px"><div class="card" style="padding:24px;text-align:center"><div style="width:80px;height:80px;border-radius:50%;margin:0 auto;background:rgba(39,150,107,.1);color:var(--success);display:grid;place-items:center;animation:pop .5s">${I("check",40,2.2)}</div><h2 style="margin:16px 0 4px">${T("اكتملت الخدمة","Service completed")}</h2><p class="muted">${T("شكراً لاستخدامك مَسار. كيف كانت تجربتك؟","Thanks for using MASAR. How was your experience?")}</p>${S.reviews[t.at]?`<p style="color:var(--success);font-weight:600">${T("شكراً على تقييمك ✓","Thanks for your review ✓")}</p>`:`<button class="btn p" data-go="review">★ ${T("قيّم تجربتك","Rate your experience")}</button>`}<button class="btn" style="margin-top:8px" data-rebook="${p.id}">${T("احجز مجدداً","Book again")}</button></div></div>`;
+  if (t.status === "CANCELLED") return `${hdr(T("دوري","My Queue"))}<div class="px"><div class="card" style="padding:24px;text-align:center"><div style="width:80px;height:80px;border-radius:50%;margin:0 auto;background:#EEF3F8;color:var(--muted);display:grid;place-items:center">${I("ban",38)}</div><h2 style="margin:16px 0 4px">${T("تم إلغاء الحجز","Booking cancelled")}</h2><p class="muted num">${t.number} · ${esc(name(p))}</p><button class="btn p" data-rebook="${p.id}">${T("احجز مجدداً","Book again")}</button></div></div>`;
+  return `${hdr(T("دوري","My Queue"))}<div class="px" style="display:grid;gap:14px;padding-bottom:16px">
+  <div class="ticket"><div class="ttop"><div style="display:flex;align-items:center;gap:10px">${logo(p,40)}<div style="flex:1;min-width:0"><b style="display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(name(p))}</b><small style="color:var(--light)">${T(...p.area)}</small></div>${inLine?`<span class="live"><i></i>${T("مباشر","Live")}</span>`:""}<span class="tagd" style="background:#fff">${T("تجريبي","DEMO")}</span></div>
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px"><div><small style="color:var(--light);letter-spacing:.12em;font-size:11px">${T("رقم التذكرة","TICKET NUMBER")}</small><div class="big num">${t.number}</div><small style="color:var(--pale)">${T(s[1],s[2])}</small></div><div style="text-align:end"><small style="color:var(--light);font-size:11px">${T("الرقم الحالي","Now serving")}</small><div class="num" style="font-size:22px;font-weight:600">${p.serving}</div></div></div></div>
+  <div class="perf"></div><div class="tb"><div style="display:flex;justify-content:space-between">${statusB(t.status)}<span style="display:flex;gap:8px;font-size:11.5px;font-weight:600">${t.arrived?`<span style="color:var(--success)">✓ ${T("تم تأكيد الوصول","Arrival confirmed")}</span>`:""}${t.postponed?`<span class="muted">↺ ${T("تم التأجيل","Postponed")}</span>`:""}</span></div>
+  ${t.slot?`<div class="box" style="margin-top:14px"><small>${I("cal",13)} ${T("وقت الدخول","Entry time")}</small><b class="num" style="font-size:20px">${fmtTime(t.slot)}</b></div>`:""}
+  ${inLine?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px"><div class="box"><small>${I("users",13)} ${T("الأشخاص قبلك","People ahead")}</small><b class="num" style="font-size:28px">${t.ahead}</b></div><div class="box"><small>${I("clock",13)} ${T("الانتظار المتوقع","Estimated wait")}</small><b style="font-size:21px">${range(e)}</b></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:11.5px;margin:14px 0 6px" class="muted"><span>${T("تقدّم الطابور","Queue progress")}</span>${t.ahead===0?`<b style="color:var(--success)">${T("أنت التالي","You're next")}</b>`:""}</div><div class="bar"><i style="width:${prog*100}%"></i></div>`:""}
+  ${t.status==="IN_SERVICE"?`<div style="margin-top:14px;background:rgba(208,225,242,.5);border-radius:16px;padding:16px;text-align:center;font-weight:600;color:var(--deep)">${T("جارٍ خدمتك الآن","You're being served")}</div>`:""}</div></div>
+  ${t.status==="CALLED"?`<div class="called">${I("bell",28)}<div><b style="font-size:16px">${T("حان دورك!","It's your turn!")}</b><div style="font-size:13px;opacity:.9">${t.arrived?T("توجّه إلى الكاونتر 2.","Please go to counter 2."):T("أكّد وصولك وتوجّه إلى الكاونتر 2.","Confirm arrival and go to counter 2.")}</div></div></div>`:""}
+  ${(inLine||t.status==="CALLED")?`${!t.arrived?`<button class="btn p" data-sheet="arrive">${I("pinok",20)} ${T("تأكيد الوصول","Confirm Arrival")}</button>`:""}<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><button class="btn o" data-sheet="postpone" ${t.postponed||p.qt==="timed"?"disabled":""}>${I("timer",18)} ${t.postponed?T("تم التأجيل","Postponed"):T("تأجيل دوري","Postpone")}</button><button class="btn d" data-sheet="cancel">${I("ban",18)} ${T("إلغاء الحجز","Cancel")}</button></div>`:""}
+  <div class="card list"><div style="display:flex;justify-content:space-between;padding:12px 16px;font-size:13.5px"><span class="muted">${T("وقت الحجز","Booked at")}</span><b class="num">${fmtTime(t.at)}</b></div><div style="display:flex;justify-content:space-between;padding:12px 16px;font-size:13.5px"><span class="muted">${T("نوع الطابور","Queue type")}</span><b>${T(...QT[p.qt])}</b></div></div>
+  <p class="muted" style="font-size:11.5px;text-align:center;margin:0">${T("نسخة تجريبية: الطابور يتقدم تلقائياً كل بضع ثوانٍ.","Demo: the queue advances automatically every few seconds.")}</p></div>`;
+};
+V.queue = () => `${hdr(T("دوري","My Queue"), false, `<button style="font-size:13px;color:var(--medium);font-weight:500" data-go="history">${T("السجل","History")}</button>`)}${active() ? `<div class="px"><button style="width:100%;text-align:start" data-go="ticket">${V.ticket().split('<div class="px" style="display:grid;gap:14px;padding-bottom:16px">')[1]?.split('<div class="perf">')[0] + "</div></div>" || ""}</button></div>` : `<div class="empty"><div class="ic">${I("ticket",36)}</div><b style="font-size:17px">${T("لا توجد تذاكر نشطة","No active tickets")}</b><p class="muted" style="max-width:280px;margin:8px auto 22px;line-height:1.6">${T("احجز دورك في أي مكان مشارك وستظهر تذكرتك الرقمية هنا.","Book at any participating place and your ticket appears here.")}</p><button class="btn p" style="width:auto;padding:0 22px;margin:0 auto" data-go="explore">${T("ابحث عن مكان","Find a place")}</button></div>`}`;
+V.notifs = () => { S.notifs.forEach(n=>n.read=true); persist(); return `${hdr(T("التنبيهات","Notifications"), false)}${S.notifs.length ? `<div class="px" style="display:grid;gap:8px;padding-bottom:16px">${S.notifs.map(n=>{const d=NT[n.type];const p=P_(n.place);const body=T(d[2],d[3]).replace("{t}",n.ticket).replace("{p}",name(p));const urg=n.type==="CALLED"||n.type==="NEXT";return `<button class="card" data-go="ticket" style="display:flex;gap:12px;padding:14px;text-align:start"><span style="width:40px;height:40px;border-radius:12px;flex:none;display:grid;place-items:center;background:${urg?"rgba(39,150,107,.1)":n.type==="CANCEL"?"rgba(217,83,79,.1)":"rgba(208,225,242,.6)"};color:${urg?"var(--success)":n.type==="CANCEL"?"var(--error)":"var(--deep)"}">${I(urg?"bell":n.type==="DONE"?"check":n.type==="CANCEL"?"ban":"clock",20)}</span><span style="flex:1;min-width:0"><span style="display:flex;justify-content:space-between;gap:8px"><b style="font-size:14px">${T(d[0],d[1])}</b><small class="muted num">${fmtTime(n.at)}</small></span><span class="muted" style="font-size:13px;line-height:1.6;display:block;margin-top:2px">${esc(body)}</span><small class="muted" style="font-size:10.5px;opacity:.8">${T("داخل التطبيق: تم التسليم · SMS/واتساب: غير متصل","In-app: delivered · SMS/WhatsApp: not connected")}</small></span></button>`}).join("")}</div>` : `<div class="empty"><div class="ic">${I("bell",34)}</div><b>${T("لا جديد","You're all caught up")}</b><p class="muted">${T("ستظهر هنا تحديثات الطابور والتذكيرات.","Queue updates and reminders will appear here.")}</p></div>`}`; };
+V.history = () => `${hdr(T("سجل الطوابير","Queue history"))}${S.history.length ? `<div class="px" style="display:grid;gap:10px">${S.history.map(h=>{const p=P_(h.place);return `<div class="card" style="padding:14px;display:flex;gap:12px;align-items:center">${logo(p,44)}<div style="flex:1;min-width:0"><b style="font-size:14.5px">${esc(name(p))}</b><div class="muted" style="font-size:12.5px"><span class="num">${h.number}</span> · ${fmtTime(h.at)}</div></div>${statusB(h.status)}</div>`}).join("")}</div>` : `<div class="empty"><div class="ic">${I("history",34)}</div><b>${T("لا يوجد شيء بعد","Nothing here yet")}</b><p class="muted">${T("ستظهر زياراتك السابقة هنا.","Your past visits will appear here.")}</p></div>`}`;
+V.review = () => { const t = S.ticket; const p = P_(t.place); const st = (k, lbl) => `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span style="font-size:13.5px">${lbl}</span><span class="stars">${[1,2,3,4,5].map(i=>`<button data-star="${k}-${i}" class="${UI.stars[k]>=i?"on":""}" aria-label="${i}" style="font-size:${k?22:30}px">★</button>`).join("")}</span></div>`;
+  return `${hdr(T("قيّم زيارتك","Rate your visit"))}<div class="px" style="display:grid;gap:14px"><div class="card" style="padding:16px;display:flex;gap:12px;align-items:center">${logo(p,48)}<div><b>${esc(name(p))}</b><div style="color:var(--success);font-size:11.5px">✓ ${T("زيارة موثقة","Verified visit")}</div></div></div><div class="card" style="padding:18px;display:grid;gap:14px"><div style="text-align:center"><b>${T("التجربة العامة","Overall experience")}</b><div class="stars" style="margin-top:6px">${[1,2,3,4,5].map(i=>`<button data-star="0-${i}" class="${UI.stars[0]>=i?"on":""}" aria-label="${i}" style="font-size:34px">★</button>`).join("")}</div></div>${st(1,T("تجربة الانتظار","Waiting experience"))}${st(2,T("جودة الخدمة","Service quality"))}</div><textarea id="rv" class="inp" style="height:110px;padding:12px 16px" placeholder="${T("شارك الآخرين تجربتك (اختياري)","Tell others about your visit (optional)")}"></textarea><button class="btn p" data-submitrev ${UI.stars[0]?"":"disabled"}>${T("إرسال التقييم","Submit review")}</button></div>`; };
+V.profile = () => `${hdr(T("حسابي","Profile"), false)}<div class="px" style="display:grid;gap:14px;padding-bottom:16px">${S.user?`<div class="card" style="padding:16px;display:flex;gap:14px;align-items:center"><span style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--deep),var(--accent));color:#fff;display:grid;place-items:center;font-size:22px;font-weight:700">${esc(S.user.name.slice(0,1))}</span><div><b style="font-size:17px">${esc(S.user.name)}</b><div class="muted num" dir="ltr" style="font-size:13px">+965 ${esc(S.user.phone)}</div></div></div>`:`<div class="card" style="padding:20px;text-align:center"><div style="margin:0 auto 10px;width:max-content">${LOGO(48)}</div><b>${T("سجّل الدخول إلى مَسار","Sign in to MASAR")}</b><p class="muted" style="font-size:13px">${T("احجز الطوابير وتابع التحديثات.","Book queues and get live updates.")}</p><button class="btn p" data-go="login">${T("تسجيل الدخول","Sign in")}</button></div>`}
+  <div class="card list"><button class="li" data-go="notifs"><span class="ic">${I("bell",18)}</span><span style="flex:1">${T("التنبيهات","Notifications")}</span></button><button class="li" data-go="history"><span class="ic">${I("history",18)}</span><span style="flex:1">${T("سجل الطوابير","Queue history")}</span></button><button class="li" data-go="explore"><span class="ic">${I("heart",18)}</span><span style="flex:1">${T("المفضلة","Favorites")} <small class="muted num">(${S.favs.length})</small></span></button></div>
+  <div class="card" style="display:flex;align-items:center;gap:12px;padding:12px 16px"><span class="li" style="padding:0;flex:1"><span class="ic">${I("lang",18)}</span>${T("اللغة","Language")}</span><div class="seg" style="width:140px"><button class="${S.lang==="ar"?"on":""}" data-setlang="ar">عربي</button><button class="${S.lang==="en"?"on":""}" data-setlang="en">EN</button></div></div>
+  <div class="card list"><button class="li" data-go="tour"><span class="ic">${I("spark",18)}</span><span style="flex:1">${T("عن مَسار وكل الصفحات","About MASAR & all pages")}</span></button><button class="li" data-go="business"><span class="ic">${I("building",18)}</span><span style="flex:1">${T("لوحة المنشأة","Business dashboard")}</span></button><button class="li" data-go="display"><span class="ic">${I("tv",18)}</span><span style="flex:1">${T("شاشة الانتظار","Waiting-room display")}</span></button></div>
+  ${S.user?`<button class="btn d" data-logout>${I("logout",18)} ${T("تسجيل الخروج","Log out")}</button>`:""}<button class="muted" style="font-size:12px" data-reset>${T("إعادة ضبط البيانات التجريبية","Reset demo data")}</button></div>`;
+
+// ───────── platform views (outside the phone) ─────────
+function tourView() {
+  const F = [["phone","احجز دورك عن بُعد","Book remotely","اختر المكان والخدمة واحصل على رقمك وأنت في البيت.","Pick a place and service and get your number from home."],["ticket","تذكرة رقمية حيّة","Live digital ticket","الرقم الحالي وعدد الأشخاص قبلك والوقت المتوقع لحظة بلحظة.","Now-serving, people ahead and the estimate, live."],["brain","توقع ذكي للانتظار","Smart wait prediction","نطاق زمني مبني على الموظفين ومدة الخدمة وأوقات الذروة.","A range from staff, service time and peak hours."],["bell","تنبيهات ذكية","Smart alerts","باقي 5 قبلك، دورك يقترب، دورك التالي، تم استدعاؤك.","5 ahead, approaching, next, called."],["qr","تأكيد وصول عادل","Fair arrival","رمز يتغير كل 5 دقائق يظهر فقط في الفرع.","A code that rotates every 5 minutes, only on-site."],["timer","تأجيل وإلغاء","Postpone & cancel","تأجيل مرة واحدة يرجّعك للخلف فقط.","Postpone once — it only moves you back."],["cal","أفضل وقت للزيارة","Best time to visit","هادئ / متوسط / مزدحم حسب الساعة.","Quiet / moderate / busy by hour."],["health","طوابير صحية آمنة","Safe healthcare","الأولوية الطبية بيد الطاقم الطبي فقط.","Medical priority only by clinical staff."],["gauge","رصد الازدحام","Crowd detection","تنبيه المنشأة عند الزيادة المفاجئة أو البطء.","Alerts businesses about surges or slow service."],["lang","عربي وإنجليزي","Arabic & English","واجهة كاملة من اليمين لليسار وبالعكس.","Full RTL and LTR interfaces."]];
+  const pages = [["splash","شاشة البداية","Splash"],["onb","شاشات التعريف","Onboarding"],["login","تسجيل الدخول","Sign in"],["home","الرئيسية","Home"],["explore","استكشف والبحث","Explore & search"],["place-oasis","صفحة منشأة","Place details"],["services-oasis","اختيار الخدمة","Service selection"],["book-oasis-cut","تأكيد الحجز","Booking"],["place-heritage","دخول بموعد (متحف)","Timed entry"],["place-shifa","طابور صحي (عيادة)","Healthcare queue"],["queue","دوري","My Queue"],["ticket","التذكرة الحيّة","Live ticket"],["notifs","التنبيهات","Notifications"],["history","السجل","History"],["profile","حسابي","Profile"],["business","لوحة المنشأة","Business dashboard"],["display","شاشة الانتظار","TV display"]];
+  return `<header class="topbar"><div class="wide"><span class="brand">${LOGO(34)}<span><b>MASAR</b><small>مَسار</small></span></span><span style="display:flex;gap:8px"><button class="pill" data-lang>${I("lang",14)} ${T("English","العربية")}</button><button class="cta navy" style="height:36px;padding:0 16px;font-size:13px" data-go="${S.user?"home":"splash"}">${T("جرّب الآن","Try it now")}</button></span></div></header>
+  <section class="hero"><div class="wide"><div><span class="tag">${I("spark",14)} ${T("منصة إدارة الطوابير الذكية — الكويت","Smart queue platform — Kuwait")}</span><h1>${T("وقتك. دورك.","Your Time. Your Turn.")}</h1><div style="color:var(--light)" dir="ltr">${S.lang==="ar"?"Your Time. Your Turn.":"وقتك. دورك."}</div>
+  <p>${T("مَسار يخليك تحجز دورك في المطاعم والصالونات والعيادات والبنوك والمراكز الخدمية عن بُعد، وتتابعه مباشرة، وتوصل بالوقت المناسب بدل الوقوف في الطابور.","MASAR lets you book your turn at restaurants, salons, clinics, banks and service centres remotely, track it live and arrive just in time.")}</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:26px"><button class="cta white" data-go="${active()?"ticket":S.user?"home":"splash"}">${I("phone",20)} ${active()?T("تذكرتي الحالية","My live ticket"):T("جرّب تطبيق العملاء","Try the customer app")}</button><a class="cta ghost" href="#all" data-scroll>${T("كل الصفحات","All pages")}</a></div>
+  <p style="font-size:12.5px;color:var(--light);margin-top:16px">${T("نسخة تجريبية تفاعلية — رمز التحقق:","Interactive demo — verification code:")} <b class="num" style="color:#fff">123456</b></p></div>
+  <div class="hero-phone" style="max-width:290px;margin:0 auto;width:100%"><div style="background:#0F1D33;border-radius:40px;padding:12px;box-shadow:0 30px 80px rgba(0,0,0,.35)"><div style="background:var(--bg);border-radius:30px;overflow:hidden;color:var(--navy)"><div style="background:linear-gradient(135deg,var(--navy),var(--deep));color:#fff;padding:22px 20px"><small style="color:var(--light);letter-spacing:.12em;font-size:11px">${T("رقم التذكرة","TICKET")}</small><div class="num" style="font-size:42px;font-weight:700">A-024</div><small style="color:var(--pale)">${T("قص الشعر · صالون الواحة","Haircut · Oasis Grooming")}</small></div><div style="padding:14px;display:grid;gap:10px"><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div class="card" style="padding:10px"><small class="muted" style="font-size:10px">${T("قبلك","Ahead")}</small><b class="num" style="display:block;font-size:22px">5</b></div><div class="card" style="padding:10px"><small class="muted" style="font-size:10px">${T("الانتظار","Wait")}</small><b style="display:block;font-size:17px"><span class="num">18–24</span> <small>${T("د","min")}</small></b></div></div><div class="bar"><i style="width:62%"></i></div><div style="background:rgba(39,150,107,.1);color:var(--success);border-radius:14px;padding:10px;font-size:12px;font-weight:600">🔔 ${T("دورك يقترب — باقي 3 قبلك","Approaching — 3 ahead")}</div></div></div></div></div></div></section>
+  <div class="wide sec"><h2>${T("رحلة المستخدم","The user journey")}</h2><div class="grid g3">${[["اختر المكان","Choose a place","تصفح الفئات وشوف الانتظار الحالي.","Browse and see current waits."],["اختر الخدمة","Pick a service","كل خدمة بمدتها والوقت المتوقع.","Each with duration and estimate."],["احصل على رقمك","Get your number","تذكرة رقمية فورية.","Instant digital ticket."],["تابع مباشرة","Track live","الطابور يتحرك وتوصلك التنبيهات.","The queue moves; alerts arrive."],["أكّد وصولك","Confirm arrival","بالرمز الظاهر على شاشة الفرع.","With the branch screen code."],["قيّم تجربتك","Rate the visit","تقييم موثّق بعد اكتمال الخدمة.","A verified review."]].map((s,i)=>`<div class="card step"><span class="n num">${i+1}</span><div><h3>${T(s[0],s[1])}</h3><p>${T(s[2],s[3])}</p></div></div>`).join("")}</div></div>
+  <div class="wide sec"><h2>${T("المزايا","Features")}</h2><div class="grid g5">${F.map(f=>`<div class="card feat"><span class="ic">${I(f[0],20)}</span><h3>${T(f[1],f[2])}</h3><p>${T(f[3],f[4])}</p></div>`).join("")}</div></div>
+  <div class="wide sec"><h2>${T("منصة متكاملة — جرّب كل جزء","One platform — try every part")}</h2><p class="sub">${T("احجز من تطبيق العملاء، وشوف نفس التذكرة في لوحة المنشأة وشاشة الانتظار.","Book in the customer app and see the same ticket in the dashboard and TV display.")}</p><div class="grid g3">
+  <button class="part" style="background:linear-gradient(135deg,var(--navy),var(--deep))" data-go="${S.user?"home":"splash"}">${I("phone",30)}<h3>${T("تطبيق العملاء","Customer app")}</h3><p>${T("سجّل، احجز، تابع تذكرتك، أكّد وصولك وقيّم.","Sign up, book, track, check in and rate.")}</p><span class="b">${T("جرّب التطبيق","Try the app")}</span></button>
+  <button class="part" style="background:linear-gradient(135deg,var(--deep),var(--medium))" data-go="business">${I("building",30)}<h3>${T("لوحة المنشأة","Business dashboard")}</h3><p>${T("الطابور المباشر، استدعاء التالي، مؤشرات اليوم وتنبيهات الازدحام.","Live queue, call next, today's KPIs and crowd alerts.")}</p><span class="b">${T("افتح اللوحة","Open dashboard")}</span></button>
+  <button class="part" style="background:linear-gradient(135deg,#1B2F4D,var(--navy))" data-go="display">${I("tv",30)}<h3>${T("شاشة الانتظار","Waiting-room display")}</h3><p>${T("الرقم الحالي والتالي ورمز تسجيل الحضور للتلفزيون.","Now serving, next and the check-in code for TV.")}</p><span class="b">${T("افتح الشاشة","Open display")}</span></button></div></div>
+  <div class="wide sec" id="all"><h2>${T("كل الصفحات","All pages")}</h2><div class="card" style="padding:18px;margin-top:24px"><div class="links">${pages.map(p=>`<button data-go="${p[0]}">${T(p[1],p[2])}</button>`).join("")}</div></div>
+  <div class="card" style="padding:18px;margin-top:12px"><b>${T("5 أنواع طوابير","5 queue types")}</b><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">${[["طابور خدمة","Service queue"],["مواعيد","Appointments"],["دخول بموعد وسعة محدودة","Timed entry"],["طابور حضوري","Walk-in"],["رعاية صحية","Healthcare"]].map(q=>`<span class="b blue" style="font-size:12.5px;padding:7px 12px">✓ ${T(q[0],q[1])}</span>`).join("")}</div></div></div>
+  <div class="foot"><div dir="ltr">MASAR · مَسار — Your Time. Your Turn.</div><div style="margin-top:4px">${T("نسخة تجريبية: جميع المنشآت والبيانات نموذجية لأغراض العرض.","Demo build: all establishments and data are samples for demonstration.")}</div></div>`;
+}
+function bizView() {
+  const p = P_("oasis"); const t = S.ticket && S.ticket.place === "oasis" && active() ? S.ticket : null;
+  const rows = [{n:"B-010",c:T("زائر 4","Guest 4"),s:T("تهذيب اللحية","Beard Trim"),a:true},{n:"A-009",c:T("زائر 5","Guest 5"),s:T("قص الشعر","Haircut"),a:false}];
+  if (t && (t.status==="WAITING"||t.status==="ARRIVED")) rows.splice(Math.min(rows.length, t.ahead), 0, {n:t.number,c:esc(S.user?.name||T("أنت","You"))+" ★",s:T("قص الشعر","Haircut"),a:t.arrived,me:true});
+  return `<header class="topbar"><div class="wide"><span class="brand">${LOGO(30)}<span><b>MASAR</b><small>${T("لوحة المنشأة","Business")}</small></span></span><span style="display:flex;gap:8px"><button class="pill" data-go="tour">${T("الرئيسية","Showcase")}</button><button class="pill" data-lang>${I("lang",14)} ${T("English","العربية")}</button></span></div></header>
+  <div class="wide" style="padding-block:24px"><div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">${logo(p,48)}<div style="flex:1"><h2 style="margin:0;font-size:20px">${esc(name(p))} · ${T("السالمية","Salmiya")}</h2><span class="b ok">${T("موثّقة","Verified")}</span> <span class="tagd">${T("بيانات تجريبية","Demo data")}</span></div><div class="pill" style="font-family:monospace;letter-spacing:.2em">${I("qr",14)} ${checkCode()}</div></div>
+  <div class="grid g4" style="margin-top:18px">${[[T("عملاء اليوم","Customers today"),"42"],[T("في الطابور","In queue"),String(rows.length)],[T("متوسط الانتظار","Avg. wait"),"14 "+T("د","min")],[T("التقييم","Rating"),"4.7"]].map(k=>`<div class="card" style="padding:16px"><small class="muted">${k[0]}</small><b class="num" style="display:block;font-size:26px;margin-top:6px">${k[1]}</b></div>`).join("")}</div>
+  <div class="hint" style="margin-top:14px;background:rgba(39,150,107,.08);border-color:transparent;color:var(--success)">${I("gauge",16)} ${T("تنبيهات تشغيلية: كل شيء يسير بشكل طبيعي.","Operational alerts: everything looks normal.")}</div>
+  <h3 style="margin:22px 0 10px;font-size:13px;color:var(--muted);text-transform:uppercase">${T("قيد الخدمة","Now serving")}</h3><div class="grid g3" style="margin-top:0">${["C-009","C-010","B-009"].map((n,i)=>`<div class="card" style="padding:16px"><div style="display:flex;justify-content:space-between"><b class="num" style="font-size:28px">${n}</b><span class="b nv">${T("قيد الخدمة","In service")}</span></div><small class="muted">${T("الكاونتر","Counter")} ${i+1}</small><div style="display:flex;gap:6px;margin-top:12px"><span class="sbtn" style="background:var(--success);color:#fff;display:grid;place-items:center">✓ ${T("إنهاء","Complete")}</span></div></div>`).join("")}</div>
+  <h3 style="margin:22px 0 10px;font-size:13px;color:var(--muted);text-transform:uppercase">${T("في الطابور","In line")}</h3><div class="card" style="overflow-x:auto"><table class="table" style="min-width:560px"><thead><tr><th>#</th><th>${T("التذكرة","Ticket")}</th><th>${T("العميل","Customer")}</th><th>${T("الخدمة","Service")}</th><th>${T("الوصول","Arrival")}</th><th>${T("الإجراءات","Actions")}</th></tr></thead><tbody>${rows.map((r,i)=>`<tr style="${r.me?"background:rgba(208,225,242,.35)":""}"><td class="num muted">${i+1}</td><td class="num"><b>${r.n}</b></td><td>${r.c}</td><td class="muted">${r.s}</td><td><span class="b ${r.a?"ok":"mut"}">${r.a?T("في الموقع","On-site"):T("لم يصل","Not yet")}</span></td><td><span class="sbtn" style="background:rgba(208,225,242,.7);display:inline-grid;place-items:center">${T("تأكيد الوصول","Confirm Arrival")}</span></td></tr>`).join("")}</tbody></table></div>
+  <p class="muted" style="font-size:12.5px;margin-top:12px">${T("احجز في صالون الواحة من تطبيق العملاء، وبتظهر تذكرتك هنا (★) وتتحرك مباشرة.","Book at Oasis Grooming in the customer app and your ticket (★) appears here live.")}</p></div>`;
+}
+function displayView() {
+  const t = S.ticket && S.ticket.place === "oasis" ? S.ticket : null;
+  const serving = t && (t.status === "CALLED" || t.status === "IN_SERVICE") ? t.number : "C-009";
+  const next = ["B-010", "A-009"]; if (t && (t.status==="WAITING"||t.status==="ARRIVED")) next.splice(Math.min(2,t.ahead),0,t.number);
+  return `<div class="wide" style="padding-block:20px"><div style="display:flex;justify-content:space-between;margin-bottom:12px"><button class="pill" data-go="tour">${T("الرئيسية","Showcase")}</button><button class="pill" data-fs>${T("ملء الشاشة","Full screen")}</button></div><div class="tv" dir="rtl"><div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><div style="display:flex;gap:12px;align-items:center"><span style="background:#fff;border-radius:16px;padding:6px;display:grid">${LOGO(40)}</span><div><b style="font-size:22px">صالون الواحة · السالمية</b><div style="color:var(--light);font-size:13px" dir="ltr">Oasis Grooming Lounge · Salmiya</div></div></div><span class="num" style="font-size:30px;font-weight:300">${fmtTime(Date.now())}</span></div>
+  <div class="tvg"><div class="tvw"><b class="muted" style="font-size:18px">الرقم الحالي <small dir="ltr" style="font-weight:400">Now Serving</small></b><div style="background:var(--navy);color:#fff;border-radius:22px;padding:22px;margin-top:14px"><div class="num" style="font-size:clamp(56px,10vw,104px);font-weight:700;line-height:1">${serving}</div><div style="color:var(--light);font-size:20px;margin-top:10px">الكاونتر 2 · <span dir="ltr">Counter 2</span></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px"><div style="background:var(--bg);border-radius:18px;padding:16px"><div class="num" style="font-size:44px;font-weight:700">C-010</div><small class="muted">الكاونتر 1</small></div><div style="background:var(--bg);border-radius:18px;padding:16px"><div class="num" style="font-size:44px;font-weight:700">B-009</div><small class="muted">الكاونتر 3</small></div></div></div>
+  <div style="display:grid;gap:14px"><div style="background:rgba(255,255,255,.08);border-radius:22px;padding:18px"><b style="color:var(--light)">التالي <small dir="ltr">Next</small></b><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">${next.slice(0,3).map(n=>`<div class="num" style="background:rgba(255,255,255,.1);border-radius:14px;padding:12px;text-align:center;font-size:24px;font-weight:700">${n}</div>`).join("")}</div></div>
+  <div style="background:#fff;color:var(--navy);border-radius:22px;padding:18px"><b>حاضر في الفرع؟ أدخل الرمز</b><div class="muted" style="font-size:12px" dir="ltr">Joining in person? Enter the code</div><div class="num" style="font-family:monospace;font-size:32px;font-weight:700;letter-spacing:.3em;margin-top:8px">${checkCode()}</div></div></div></div><p style="text-align:center;color:var(--light);font-size:12px;margin:16px 0 0">بيانات تجريبية · Demo data</p></div></div>`;
+}
+
+// ───────── render ─────────
+function render() {
+  document.documentElement.lang = S.lang; document.documentElement.dir = S.lang === "ar" ? "rtl" : "ltr";
+  const r = UI.route; const app = $("#app");
+  if (r === "tour") { app.innerHTML = tourView(); return; }
+  if (r === "business") { app.innerHTML = bizView(); return; }
+  if (r === "display") { app.innerHTML = displayView(); return; }
+  const view = (V[r] || V.home)();
+  const tabs = ["home","explore","queue","notifs","profile"]; const showNav = tabs.includes(r);
+  const unread = S.notifs.filter(n=>!n.read).length;
+  const full = ["splash","onb","login","otp","success"].includes(r);
+  app.innerHTML = `<div class="stage"><div class="phone">${showNav?`<div class="demo">${T("وضع تجريبي — المنشآت والطوابير وأوقات الانتظار بيانات نموذجية.","Demo mode — places, queues and wait times are sample data.")} <button style="text-decoration:underline;font-size:11px;color:inherit" data-go="tour">${T("عن مَسار","About")}</button></div>`:""}<div class="scr" style="${full?"padding-bottom:0;display:flex;flex-direction:column":""}">${view}</div>
+  ${showNav?`<nav class="nav">${[["home","home","الرئيسية","Home"],["explore","compass","استكشف","Explore"],["queue","ticket","دوري","My Queue"],["notifs","bell","التنبيهات","Alerts"],["profile","user","حسابي","Profile"]].map(x=>`<button class="${r===x[0]?"on":""}" data-go="${x[0]}">${I(x[1],22,r===x[0]?2.2:1.7)}${x[0]==="notifs"&&unread?`<span class="badge num">${unread}</span>`:""}${x[0]==="queue"&&active()?`<span class="badge" style="background:var(--medium)">1</span>`:""}${T(x[2],x[3])}</button>`).join("")}</nav>`:""}
+  ${UI.sheet?sheetView():""}${UI.toast?`<div class="toast ${UI.toast.e?"e":""}" role="status">${esc(UI.toast.t)}</div>`:""}</div></div>`;
+  if (r === "otp") setTimeout(() => $("#o0")?.focus(), 50);
+}
+function sheetView() {
+  const t = S.ticket;
+  if (UI.sheet === "arrive") return `<div class="sheetbg" data-closesheet><div class="sheet" data-stop><h3>${T("أكّد وصولك","Confirm your arrival")}</h3><p class="muted" style="font-size:13.5px;line-height:1.7;margin:0 0 14px">${T("لمنع تسجيل الحضور عن بُعد، يتم تأكيد الوصول بالرمز الظاهر على شاشة الفرع (يتغير كل 5 دقائق).","To prevent remote check-ins, arrival uses the code shown on the branch screen (rotates every 5 minutes).")}</p>
+  <div class="hint">${I("help",16)}<span style="flex:1">${T("تجريبي: شاشة الفرع تعرض الرمز","Demo: the branch screen shows")} <b class="num">${checkCode()}</b></span><button data-usecode>${T("استخدمه","Use")}</button></div>
+  <label class="l" for="ac" style="margin-top:14px">${T("أدخل الرمز","Enter code")}</label><input id="ac" class="inp code" maxlength="6" placeholder="••••••" autocapitalize="characters">${UI.err?`<div class="err">${UI.err}</div>`:""}<button class="btn p" style="margin-top:14px" data-doarrive>${T("تأكيد","Confirm")}</button><button class="btn" style="margin-top:6px" data-closesheet>${T("إلغاء","Cancel")}</button></div></div>`;
+  if (UI.sheet === "postpone") return `<div class="sheetbg" data-closesheet><div class="sheet" data-stop style="text-align:center"><div style="width:56px;height:56px;border-radius:50%;background:rgba(208,225,242,.7);color:var(--deep);display:grid;place-items:center;margin:0 auto 14px">${I("timer",26)}</div><h3>${T("تأجيل دورك؟","Postpone your turn?")}</h3><p class="muted" style="line-height:1.7">${T("ستتأخر 3 مراكز في الطابور. يمكنك التأجيل مرة واحدة فقط ولا تتقدم على أحد.","You'll move back 3 places. You can postpone only once and never jump ahead.")}</p><button class="btn p" data-dopostpone>${T("نعم، أجّل","Yes, postpone")}</button><button class="btn" style="margin-top:6px" data-closesheet>${T("إلغاء","Cancel")}</button></div></div>`;
+  if (UI.sheet === "cancel") return `<div class="sheetbg" data-closesheet><div class="sheet" data-stop style="text-align:center"><div style="width:56px;height:56px;border-radius:50%;background:rgba(217,83,79,.1);color:var(--error);display:grid;place-items:center;margin:0 auto 14px">${I("ban",26)}</div><h3>${T("إلغاء الحجز؟","Cancel your queue?")}</h3><p class="muted" style="line-height:1.7">${T(`سيتم تحرير التذكرة ${t.number} وستفقد مكانك في الطابور.`,`Ticket ${t.number} will be released and you'll lose your place.`)}</p><button class="btn" style="background:var(--error);color:#fff" data-docancel>${T("نعم، ألغِ التذكرة","Yes, cancel ticket")}</button><button class="btn" style="margin-top:6px" data-closesheet>${T("الاحتفاظ بالتذكرة","Keep my ticket")}</button></div></div>`;
+  return "";
+}
+
+// ───────── events ─────────
+document.addEventListener("input", (e) => {
+  if (e.target.id === "q") { UI.q = e.target.value; const pos = e.target.selectionStart; render(); const q = $("#q"); q.focus(); q.setSelectionRange(pos, pos); }
+  if (/^o\d$/.test(e.target.id)) { const v = e.target.value.replace(/\D/g, ""); const i = +e.target.id[1]; if (v.length > 1) { v.slice(0,6).split("").forEach((d,k)=>{ const el=$("#o"+k); if(el) el.value=d; }); } else { e.target.value = v; if (v && i < 5) $("#o" + (i + 1)).focus(); } }
+  if (e.target.id === "ac") e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "");
+});
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("button,a"); if (!el) { return; }
+  const d = el.dataset;
+  if (d.stop !== undefined && !el.matches("button")) return;
+  if (d.go !== undefined) { e.preventDefault(); if (d.go === "explore") { /* keep filters */ } go(d.go); return; }
+  if (d.back !== undefined) { history.length > 1 ? history.back() : go("home"); return; }
+  if (d.scroll !== undefined) { e.preventDefault(); $("#all")?.scrollIntoView({ behavior: "smooth" }); return; }
+  if (d.lang !== undefined) { S.lang = S.lang === "ar" ? "en" : "ar"; persist(); render(); return; }
+  if (d.setlang) { S.lang = d.setlang; persist(); render(); return; }
+  if (d.onbnext !== undefined) { if (UI.onb < 2) { UI.onb++; render(); } else { S.onb = true; persist(); go(S.user ? "home" : "login"); } return; }
+  if (d.onbdone !== undefined) { S.onb = true; persist(); go(S.user ? "home" : "login"); return; }
+  if (d.sendotp !== undefined) { const n = $("#nm").value.trim(), ph = $("#ph").value.replace(/\D/g, ""); if (n.length < 2) { UI.err = T("يرجى إدخال اسمك.","Please enter your name."); render(); return; } if (!/^[4569]\d{7}$/.test(ph)) { UI.err = T("أدخل رقم هاتف كويتي صحيح (8 أرقام).","Enter a valid Kuwaiti mobile (8 digits)."); render(); $("#nm").value = n; return; } UI.name = n; UI.phone = ph; UI.err = ""; go("otp"); return; }
+  if (d.fillotp !== undefined) { "123456".split("").forEach((c,k)=>$("#o"+k).value=c); return; }
+  if (d.verify !== undefined) { const code = [0,1,2,3,4,5].map(k=>$("#o"+k).value).join(""); if (code !== "123456") { UI.err = T("الرمز غير صحيح. حاول مرة أخرى.","That code is incorrect."); render(); return; } S.user = { name: UI.name, phone: UI.phone }; S.onb = true; persist(); toast(T("تم تسجيل الدخول","Signed in")); go(UI.after || "home"); UI.after = null; return; }
+  if (d.cat !== undefined) { UI.cat = d.cat || null; if (UI.route !== "explore") go("explore"); else render(); return; }
+  if (d.sort) { UI.sort = d.sort; if (UI.route !== "explore") go("explore"); else render(); return; }
+  if (d.clear !== undefined) { UI.q = ""; UI.cat = null; render(); return; }
+  if (d.fav) { if (!S.user) { UI.after = "place-" + d.fav; go("login"); return; } const i = S.favs.indexOf(d.fav); i >= 0 ? S.favs.splice(i, 1) : S.favs.push(d.fav); persist(); toast(i >= 0 ? T("أزيل من المفضلة","Removed from favorites") : T("أضيف للمفضلة","Saved to favorites")); return; }
+  if (d.slot) { UI.slot = +d.slot; render(); return; }
+  if (d.confirm) { if (!S.user) { UI.after = "book-" + d.confirm; go("login"); return; } const [pid, sid] = d.confirm.split("-"); if (book(pid, sid)) { UI.slot = null; go("success"); } return; }
+  if (d.rebook) { go("services-" + d.rebook); return; }
+  if (d.sheet) { UI.sheet = d.sheet; UI.err = ""; render(); return; }
+  if (d.closesheet !== undefined && (el.matches("button") )) { UI.sheet = null; render(); return; }
+  if (d.usecode !== undefined) { $("#ac").value = checkCode(); return; }
+  if (d.doarrive !== undefined) { const c = $("#ac").value.trim(); if (c !== checkCode()) { UI.err = T("الرمز غير صحيح. تحقق من شاشة الفرع.","That code isn't valid. Check the branch screen."); render(); $("#ac").value = c; return; } S.ticket.arrived = true; if (S.ticket.status === "WAITING") S.ticket.status = "ARRIVED"; persist(); UI.sheet = null; toast(T("تم تأكيد وصولك. يرجى الانتظار حتى يتم استدعاؤك.","Arrival confirmed. Please wait to be called.")); render(); return; }
+  if (d.dopostpone !== undefined) { const t = S.ticket; t.ahead += 3; t.start += 3; t.postponed = true; if (t.status === "CALLED") t.status = t.arrived ? "ARRIVED" : "WAITING"; t.notified = []; notify("POST", t); persist(); UI.sheet = null; toast(T("تم تأجيل دورك.","Your turn was postponed.")); render(); return; }
+  if (d.docancel !== undefined) { S.ticket.status = "CANCELLED"; notify("CANCEL", S.ticket); S.history.unshift({ ...S.ticket }); persist(); UI.sheet = null; toast(T("تم إلغاء حجزك.","Your booking has been cancelled.")); render(); return; }
+  if (d.star) { const [k, v] = d.star.split("-").map(Number); UI.stars[k] = v; render(); return; }
+  if (d.submitrev !== undefined) { S.reviews[S.ticket.at] = { s: [...UI.stars], text: $("#rv").value.slice(0, 1000) }; UI.stars = [0,0,0]; persist(); toast(T("شكراً لك! تقييمك يساعد الآخرين.","Thank you! Your review helps others.")); go("ticket"); return; }
+  if (d.logout !== undefined) { S.user = null; persist(); go("login"); return; }
+  if (d.reset !== undefined) { try { localStorage.removeItem("masar.live.v1"); } catch (x) {} Object.assign(S, { onb: false, user: null, ticket: null, notifs: [], history: [], favs: [], reviews: {} }); persist(); go("tour"); return; }
+  if (d.fs !== undefined) { document.documentElement.requestFullscreen?.().catch(() => {}); return; }
+});
+document.addEventListener("click", (e) => { if (e.target.classList && e.target.classList.contains("sheetbg")) { UI.sheet = null; render(); } }, true);
+
+parse(); render();
+})();
+</script>

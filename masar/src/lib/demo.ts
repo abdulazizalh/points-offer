@@ -81,7 +81,7 @@ export function simulateTick(db: DB, now = Date.now(), speed = 1): boolean {
     for (const t of serving) {
       if (t.status === "IN_SERVICE") {
         const svc = db.services.find((s) => s.id === t.serviceId);
-        const needed = ((svc?.durationMin ?? 10) * 60e3) / (speed * 12); // compressed demo time
+        const needed = ((svc?.durationMin ?? 10) * 60e3) / (speed * 40); // compressed demo time: a 20-min service takes ~30s
         if (now - (t.startedAt ?? now) >= needed) {
           completeService(db, SYSTEM, t.id, now);
           changed = true;

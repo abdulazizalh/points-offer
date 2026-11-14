@@ -6,6 +6,7 @@ import { Button, Card, ConfirmDialog, EmptyState, Field, Input, PageHeader, Shee
 import { QrCode as QR } from "@/components/domain";
 import { QrScanner } from "@/components/QrScanner";
 import { TicketCard } from "@/components/TicketCard";
+import { DemoCodeHint } from "@/components/DemoCodeHint";
 import { RequireUser } from "@/components/AppFrame";
 import { useStore } from "@/lib/store";
 import { cancelTicket, confirmArrival, peopleAhead, postponeTicket, ticketEstimate } from "@/lib/engine";
@@ -163,6 +164,7 @@ function TicketInner() {
         <p className="text-[13.5px] leading-relaxed text-muted">{t("arrive.sub")}</p>
         <div className="mt-5 space-y-3">
           <Button variant="secondary" size="lg" full onClick={() => setScan(true)} icon={<Camera className="h-5 w-5" />}>{t("arrive.scan")}</Button>
+          <DemoCodeHint branchId={tk.branchId} onUse={setCode} />
           <Field label={t("arrive.enter")} hint={t("book.codeHint")} htmlFor="arrcode">
             <Input id="arrcode" dir="ltr" value={code} onChange={(e) => setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6))} className="text-center font-mono text-[20px] tracking-[0.4em]" placeholder="••••••" />
           </Field>

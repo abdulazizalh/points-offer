@@ -272,7 +272,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       } catch {}
       store.touch((d) => simulateTick(d, now));
     };
-    const iv = setInterval(tick, 7000);
+    const iv = setInterval(tick, 4000);
     return () => clearInterval(iv);
   }, [ready]);
 

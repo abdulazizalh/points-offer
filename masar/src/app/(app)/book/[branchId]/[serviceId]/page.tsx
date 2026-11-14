@@ -4,6 +4,7 @@ import { Suspense, useMemo, useState } from "react";
 import { Building2, Camera, Clock, Info, QrCode, Smartphone, Users } from "lucide-react";
 import { BizLogo, Button, Card, DemoBadge, Field, Input, PageHeader } from "@/components/ui";
 import { QrScanner } from "@/components/QrScanner";
+import { DemoCodeHint } from "@/components/DemoCodeHint";
 import { useStore } from "@/lib/store";
 import { branchLine, createTicket, queueTypeOf, slotsFor } from "@/lib/engine";
 import { estimateWait } from "@/lib/intelligence";
@@ -132,6 +133,7 @@ function BookInner() {
           </div>
           {channel === "onsite_qr" && (
             <div className="mt-3 animate-slide-up space-y-2">
+              <DemoCodeHint branchId={branch.id} onUse={setCode} />
               <Field label={t("book.code")} hint={t("book.codeHint")} htmlFor="code">
                 <div className="flex gap-2">
                   <Input id="code" dir="ltr" value={code} onChange={(e) => setCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 6))} className="text-center font-mono text-[18px] tracking-[0.4em]" placeholder="••••••" autoCapitalize="characters" />

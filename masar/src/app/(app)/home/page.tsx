@@ -62,7 +62,7 @@ export default function Home() {
         </Link>
       </header>
 
-      {active && <ActiveTicketCard id={active.id} />}
+      {active ? <ActiveTicketCard id={active.id} /> : <DemoTour />}
 
       <section className="mt-5">
         <SectionTitle title={t("home.categories")} action={t("common.seeAll")} href="/explore" />
@@ -154,5 +154,24 @@ function ActiveTicketCard({ id }: { id: string }) {
         <ChevronRight className="rtl-flip h-5 w-5 text-light" />
       </div>
     </Link>
+  );
+}
+
+function DemoTour() {
+  const { t, mode } = useStore();
+  if (mode !== "demo") return null;
+  return (
+    <section className="mx-5 mt-1 animate-slide-up rounded-[22px] border border-line bg-white p-4 shadow-card">
+      <p className="flex items-center gap-2 text-[15px] font-semibold text-navy"><Sparkles className="h-4 w-4 text-medium" />{t("demo.tourTitle")}</p>
+      <ol className="mt-3 space-y-2">
+        {[1, 2, 3, 4].map((i) => (
+          <li key={i} className="flex items-start gap-2.5 text-[13px] text-muted">
+            <span className="ltr-nums grid h-5 w-5 shrink-0 place-items-center rounded-full bg-pale text-[11px] font-bold text-navy">{i}</span>
+            {t(`demo.tour${i}`)}
+          </li>
+        ))}
+      </ol>
+      <Link href="/place/br_oasis_salmiya" className="mt-4 flex h-11 items-center justify-center rounded-2xl bg-navy text-[14px] font-semibold text-white">{t("demo.tourCta")}</Link>
+    </section>
   );
 }
